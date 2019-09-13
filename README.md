@@ -1,6 +1,6 @@
 # Overview
 
-A template file and folder structure for a data analysis project/paper done with R/Rmarkdown/Github. 
+Amanda Skarlupka's data analysis for the MADA project/paper done with R/Rmarkdown/Github. 
 
 # Pre-requisites
 
