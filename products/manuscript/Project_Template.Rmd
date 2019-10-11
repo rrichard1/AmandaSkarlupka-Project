@@ -61,10 +61,56 @@ Monoclonal antibodies raised against P1 COBRA HA immunogen show a wider-breadth 
 We have data about the differences where the antibodies bind. This data may be added in order to see if antibodies that fall into the category of 1. Bind to P1, 2.)Do not bind to human influenza, and 3.) bind to Swine influenza. I want to analyze the data by looking at the total number of viruses that the monoclonals inhibit the HA of. Then look at whether those viruses are the same ones being inhibited every across different monoclonals. Then I want to compare across P1 and CA/09 to see if P1 inhibits more than CA09. Then to see if the ones being inhibited by P1 are the same ones by CA09 and if there is any overlap. Then I want to look at if the viruses being inihibted are specific to a lineage. Finally, the monoclonal antibody inhibition in a concentration so I can look at overall if less antibody is needed for a specific virus that is inhibited by both.  
 
 
+# Material and Methods
+#### Monoclonal Antibody Production
 
-# Methods and Results
 
-_In most research papers, results and methods are separate. You can combine them here if you find it easier. You are also welcome to structure things such that those are separate sections._
+#### Viruses and HA antigens
+H1 viruses were obtained through the Influenza Reagents Resource (IRR), BEI Resources, the Centers for Disease Control (CDC), Sanofi-Pasteur, or the Tompkins Laboratory.  Viruses were passaged once in the same growth conditions as they were received or as per the instructions provided by the WHO or the University of Minnesota, in either embryonated chicken eggs or Madin-Darby canine kidney (MDCK) cell culture [1].  Virus lots were aliquoted for single-use applications and stored at -80°C. Hemagglutination titer of the frozen aliquots was determined with turkey RBCs. 
+
+The classification of the swine HA was determined using the Swine H1 Clade Classification Tool (http://www.fludb.org) [2] and infers both the global [2] and US [3, 4] swine H1 clade classification from the HA nucleotide sequence.  When available, virus was used for HAI assays where indicated (*), otherwise virus-like particles (VLP) were used. The protein accession numbers for the HA amino acid sequences used for virus like particle production are provided. Otherwise, the amino acid sequences are provided (Supplementary Table 1). The CDS of the wild-type HAs were codon optimized for expression in human cells.   
+
+Swine wild-type HAs represented different lineages and clades. The VLPs used for HAI included:
+*  A/Swine/North Carolina/93523/2001 (1A.3.3 Gamma – 2; SW/NC/01; AAL87867.1)
+* A/Swine/North Carolina/5043-1/2009 (1B.2.1 Delta – 2; SW/NC/5043-1/09; ADV69084.1)
+-A/Swine/Spain/50047/2003 H1N1 (1C.2.2 Eurasian; SW/Spain/03; ABD78104.1)
+-  A/Swine/Zhejiang/1/2007 H1N1 (1C.2.3 Eurasian; SW/Zhejiang/07; ACJ06667.1)
+- A/Swine/Wisconsin/125/1997 H1N1 (1A.1 Alpha; SW/WI/97; AAF87274.1)
+-A/Swine/Colorado/SG1322/2009 H1N1 (1A.2 Beta; SW/CO/09; AHB21556.1)
+-A/Swine/North Carolina/34543/2009 H1N1 (1A.3.3.2 npdm; SW/NC/34543/09; AEX25796.1)
+-A/Swine/Iowa/1973 H1N1 (1A.1 Alpha; SW/IA/73; ABV25637.1)
+-A/Swine/Indiana/P12439/2000 (1A.3.3 npdm; SW/IN/00; AAL87870.1)
+-A/Swine/Minnesota/A01489606/2015 (Gamma-2; SW/MN/15; AKD00877.1)
+
+When available viruses were used for HAIs. These included: 
+-A/Swine/Missouri/A01444664/2013 (Delta – 1)
+-A/Swine/North Carolina/02744/2009 (Delta – 2)
+-A/Swine/North Carolina/152702/2015 H1N2 (1B.2.1 Delta – 2)
+-A/Swine/Utah/02861/2009 H1N2
+-A/Swine/Illinois/02860/2009 H1N1 (npdm)
+-A/Swine/Minnesota/02751/2009 H1N1 (npdm)
+-A/Swine/1931 H1N1 (alpha)
+-A/Swine/Nebraska/A01444614/2013 H1N1 (1A.2 Beta; SW/NE/13; AGF68975.1)
+
+The additional eight swine and three human strains were included in the HAI panel to expand the breadth of the human and swine phylogenetic coverage from 1930 to 2015.
+
+#### Virus-like Particle (VLP) preparation
+Human embryonic kidney 293T (HEK-293T) cells (1 x 106) were transiently transfected with 1 μg DNA of each of the three pTR600 mammalian expression vectors [5] expressing the influenza neuraminidase (A/Mallard/Alberta/24/2001; H7N3), the HIV p55 Gag sequence, and one of the various H1 wild-type or COBRA HAs.  Following 72 h of incubation at 37°C, supernatants from transiently transfected cells were collected, centrifuged to remove cellular debris, and filtered through a 0.22 μm pore membrane.  Mammalian virus-like particles (VLPs) were purified and sedimented by ultracentrifugation on a 20% glycerol cushion at 135,000 x g for 4 h at 4°C.  VLPs were resuspended in phosphate buffered saline (PBS), and total protein concentration was determined with the Micro BCA Protein Assay Reagent kit (Pierce Biotechnology, Rockford, IL, USA).  Hemagglutination activity of each preparation of VLP was determined by serially diluting volumes of VLPs and adding equal volume 0.8% turkey red blood cells (RBCs) (Lampire Biologicals, Pipersville, PA, USA) suspended in PBS to a V-bottom 96-well plate with a 30 min incubation at room temperature (RT). Prepared RBCs were stored at 4°C and used within 72 h. The highest dilution of VLP with full agglutination of RBCs was considered the endpoint HA titer.  
+
+#### Hemagglutination inhibition (HAI) assay
+The hemagglutination inhibition (HAI) assay assessed functional antibodies to the HA able to inhibit agglutination of turkey erythrocytes. The protocols were adapted from the WHO laboratory influenza surveillance manual [1]. HAIs were conducted with either polyclonal mouse sera or purified monoclonal antibodies. Polyclonal sera were treated with receptor-destroying enzyme (RDE) (Denka Seiken, Co., Japan) prior to being tested to inactivate nonspecific inhibitors.  Briefly, three parts RDE was added to one part sera and incubated overnight at 37°C. RDE was inactivated by incubation at 56°C for ∼30 min. After heat treatment, six parts PBS were added to the RDE-treated sera. Purified monoclonal antibodies were adjusted to a concentration of 20 μg/ml in PBS. 
+
+RDE-treated and monoclonal antibodies were added in 50 μl to a V-bottom microtiter plate and were two-fold serially diluted across in PBS. An equal volume, 25 μl, of each virus (or VLP where applicable), adjusted to approximately 8 hemagglutination units (HAU)/50 μl, was added to all wells except for the last column which received 25 μl of PBS. The plates were covered and incubated at RT for 20 min. Then, 50 μl of 0.8% turkey red blood cells were added to each well. The plates were mixed by agitation and covered, and the RBCs were allowed to settle for 30 min at RT. The polyclonal sera HAI titer was determined by the reciprocal dilution of the last well that contained non-agglutinated RBCs. The monoclonal minimum agglutination concentration was determined by the dilution last well that contained non-agglutinated RBCs multiplied by the starting concentration of 10 μg/ml. Positive and negative serum controls were included for each plate.
+
+All mice were negative (HAI < 1:10) for preexisting antibodies to currently circulating human and swine influenza viruses prior to vaccination and seroprotection was defined as HAI titer ≥1:40 and seroconversion as a 4-fold increase in titer compared to baseline, as per the WHO and European Committee for Medicinal Products to evaluate influenza vaccines [6]; however, we often examined a more stringent threshold of ≥1:80. 
+
+#### Cell-based ELISA for Influenza Neutralization
+
+#### Statistical Analysis
+The limit of detection for the polyclonal sera HAI was 1:10, and 1:5 was used for the statistical analysis of samples below that. The limit of detection for the monoclonal antibody HAI was 10 ug/ml. Samples below that limit were XXX for statistical analysis. The log2 geometric mean was calculated from the HAI titers of the polyclonal sera and monoclonal antibody concentrations. 
+
+
+# Results
 
 
 ## Data aquisition
