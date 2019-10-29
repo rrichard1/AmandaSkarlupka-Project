@@ -1,20 +1,34 @@
-###############################
-# analysis script
-#
-#this script loads the processed, cleaned data, does a simple analysis
-#and saves the results to the results folder
+---
+title: "analysis_script_1"
+author: "Amanda Skarlupka"
+date: "10/27/2019"
+output: html_document
+---
 
-#load needed packages. make sure they are installed.
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+Load the needed packages.
+```{r}
 library(ggplot2)
-library(dplyr)
+library(forcats)
 library(broom)
 library(ggbiplot)
+library(dplyr)
+```
 
-#load data. path is relative to project directory.
+
+Load the processed data
+```{r}
 ca09_mab <- readRDS("./data/processed_data/ca09mab_processed_data.rds")
 ca09_sera <- readRDS("./data/processed_data/ca09sera_processed_data.rds")
 p1_mab <- readRDS("./data/processed_data/p1mab_processed_data.rds")
 p1_sera <- readRDS("./data/processed_data/p1sera_processed_data.rds")
+```
+
+
 
 #I need these because I wrote the code before I realized that my data wasn't actually linked. So I'll need to go back and clean this up.
 CA09_mabs_full <- readRDS("./data/processed_data/CA09mabs_full_processed_data.rds")
@@ -22,38 +36,115 @@ CA09_sera_full <- readRDS("./data/processed_data/CA09sera_full_processed_data.rd
 p1_mabs_full <- readRDS("./data/processed_data/p1mabs_full_processed_data.rds")
 p1_sera_full <- readRDS("./data/processed_data/p1sera_full_processed_data.rds")
 
-#take a look at the data
-glimpse(CA09_mabs)
-glimpse(CA09_sera)
-glimpse(p1_mabs)
+take a look at the data
+```{r}
+glimpse(ca09_mab)
+glimpse(ca09_sera)
+glimpse(p1_mab)
 glimpse(p1_sera)
+```
 
 
-
-CA09_mabs <- CA09_mabs %>%
-  group_by(monoclonal) %>%
-  arrange(concentration)
+Example graph to try and get the range of reaction of the monoclonal antibodies. Use the 1F8 as an example because it's supposed to be the most interesting one due to broad reactivity. 
+```{r}
+p1_mab$lineage[is.na(p1_mab$lineage)] <- "unknown"
   
-  
-#Example graph to try and get the range of reaction of the monoclonal antibodies. 
-d <- CA09_mabs %>%
-  filter(monoclonal == "1E6") %>%
-  ggplot(aes(y = 1/concentration, x = antigen)) +
-  geom_point() +
-  scale_y_continuous(trans='log2') +
+p1_mab$lineage <- factor(p1_mab$lineage, levels = c("human_like", "unknown", "classical", "eurasian"))
+p1_mab$sublineage <- factor(p1_mab$sublineage, levels = c("alpha", "beta", "gamma", "gamma_2", "npdm", "delta_1", "delta_2"))
+p1_mab$antigen <- factor(p1_mab$antigen, levels = c("Swine/31", "Iowa/73", "WI/97", "Indiana/00", "NC/01", "Spain/2003", "Zhejiang/07", "Colorado/09", "Illinois/09", "Minnesota/09", "NC/09", "NC/34543/09", "NC/5043-1/09", "Utah/09", "Missouri/13", "Nebraska/13", "MN/15", "NC/15"), ordered = TRUE)
+f <- p1_mab %>%
+  filter(clone_name == "1F8") %>%
+  select(c(dilution, antigen, sublineage, lineage, clone_name)) %>%
+  arrange(lineage, sublineage, antigen) %>%
+  pull(antigen)
+
+p1_mab$antigen <- factor(p1_mab$antigen, levels = (f), ordered=TRUE)
+
+p1_mab %>%
+  filter(clone_name == "1F8") %>%
+  ggplot(aes(y = dilution, x = antigen)) +
+  geom_point(aes(shape = lineage, color = sublineage, size = 3)) +
   theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
-  labs(y = "Inverse Concentration")
+  scale_shape_manual(values = c(15:18)) +
+  labs(y = "Dilution from 20ug/ml") 
+```
+
+
 
 #Graph of all the monoclonal responses
-CA09_monoclonal_responses <- CA09_mabs %>%
-  ggplot(aes(y = 1/concentration, x = antigen, color = lineage)) +
-  geom_point() +
-  scale_y_continuous(trans='log2') +
-  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
-  labs(y = "Inverse Concentration") +
-  facet_wrap(vars(monoclonal), scales = "free_x")
 
-ggsave(filename="./results/resultfigure1.png", plot = CA09_monoclonal_responses)
+```{r}
+p1_mab_all <- p1_mab %>%
+  ggplot(aes(y = dilution, x = antigen, shape = lineage, color = sublineage, size = 2)) +
+  geom_point() +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
+  labs(y = "Dilution from 20ug/ml") +
+  scale_shape_manual(values = c(15:18)) +
+  facet_wrap(vars(clone_name), scales = "free_x")
+
+pu <- p1_mab %>%
+  arrange(elisa_specificity) %>%
+  pull(clone_name)
+pu <- unique(pu)
+p1_mab$clone_name <- factor(p1_mab$clone_name, levels = pu, ordered = TRUE)
+
+p1_mab %>%
+  ggplot(aes(y = dilution, x = clone_name, color = elisa_specificity, size = 2)) +
+  geom_point() +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
+  labs(y = "Dilution from 20ug/ml") +
+  scale_shape_manual(values = c(15:18)) +
+  facet_wrap(vars(antigen), scales = "free_x")
+
+ggsave(filename="./results/p1_mab_response.png", plot = p1_mab_all)
+```
+Repeat it for the CA09 specific monoclonals
+```{r}
+ca09_mab$lineage[is.na(ca09_mab$lineage)] <- "unknown"
+  
+ca09_mab$lineage <- factor(ca09_mab$lineage, levels = c("human_like", "unknown", "classical", "eurasian"))
+ca09_mab$sublineage <- factor(ca09_mab$sublineage, levels = c("alpha", "beta", "gamma", "gamma_2", "npdm", "delta_1", "delta_2"))
+ca09_mab$antigen <- factor(ca09_mab$antigen, levels = c("Swine/31", "Iowa/73", "WI/97", "Indiana/00", "NC/01", "Spain/2003", "Zhejiang/07", "Colorado/09", "Illinois/09", "Minnesota/09", "NC/09", "NC/34543/09", "NC/5043-1/09", "Utah/09", "Missouri/13", "Nebraska/13", "MN/15", "NC/15"), ordered = TRUE)
+
+ca09_mab$antigen <- factor(ca09_mab$antigen, levels = (f), ordered=TRUE)
+
+ca09_mab %>%
+  filter(clone_name == "1E6") %>%
+  ggplot(aes(y = dilution, x = antigen)) +
+  geom_point(aes(shape = lineage, color = sublineage, size = 3)) +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
+  scale_shape_manual(values = c(15:18)) +
+  labs(y = "Dilution from 20ug/ml") 
+```
+
+```{r}
+
+cn <- ca09_mab %>%
+  arrange(raised_against) %>%
+  pull(clone_name)
+cn <- unique(cn)
+ca09_mab$clone_name <- factor(ca09_mab$clone_name, levels = (cn), ordered=TRUE)
+
+ca09_mab %>%
+  ggplot(aes(y = dilution, x = antigen, shape = lineage, color = sublineage, size = 2)) +
+  geom_point() +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
+  labs(y = "Dilution from 20ug/ml") +
+  scale_shape_manual(values = c(15:18)) +
+  facet_wrap(vars(clone_name), scales = "free_x")
+
+ca09_mab %>%
+  ggplot(aes(y = dilution, x = clone_name, shape = elisa_specificity, color = raised_against, size = 2)) +
+  geom_point() +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
+  labs(y = "Dilution from 20ug/ml") +
+  scale_shape_manual(values = c(15:18)) +
+  facet_wrap(vars(antigen), scales = "free_x")
+
+#ggsave(filename="./results/p1_mab_response.png", plot = p1_mab_all)
+```
+potentially include the SW1-4 COBRA VLPs. 
+
 
 p1_monoclonal_responses <- p1_mabs %>%
   ggplot(aes(y = 1/concentration, x = antigen, color = lineage)) +
