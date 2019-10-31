@@ -23,23 +23,25 @@ library(tidyverse)
 library(readxl)
 library(gtools)
 library(gdata)
+library(here)
+
 ```
 
 
 load the data. The data is contained within one excel file, but is separated on different sheets
 ```{r}
 
-p1_mab_full <- read_excel("~/Documents/Data Science/AmandaSkarlupka-Project/data/raw_data/data.xlsx", 
+p1_mab <- read_excel(here("data", "raw_data", "data.xlsx"), 
                       sheet = "p1_mab", na = "NA")
-ca09_mab_full <- read_excel("~/Documents/Data Science/AmandaSkarlupka-Project/data/raw_data/data.xlsx", 
+ca09_mab <- read_excel(here("data", "raw_data", "data.xlsx"), 
                       sheet = "ca09_mab", na = "NA")
-p1_sera_full <- read_excel("~/Documents/Data Science/AmandaSkarlupka-Project/data/raw_data/data.xlsx", 
+p1_sera <- read_excel(here("data", "raw_data", "data.xlsx"), 
                         sheet = "p1_sera", na = "NA")
-ca09_sera_full <- read_excel("~/Documents/Data Science/AmandaSkarlupka-Project/data/raw_data/data.xlsx", 
+ca09_sera <- read_excel(here("data", "raw_data", "data.xlsx"), 
                         sheet = "ca09_sera", na = "NA")
-antigen_key <- read_excel("~/Documents/Data Science/AmandaSkarlupka-Project/data/raw_data/data.xlsx", 
+antigen_key <- read_excel(here("data", "raw_data", "data.xlsx"), 
                    sheet = "antigen_key", na = "NA")
-antibody_key <- read_excel("~/Documents/Data Science/AmandaSkarlupka-Project/data/raw_data/data.xlsx",
+antibody_key <- read_excel(here("data", "raw_data", "data.xlsx"),
                            sheet = "antibody_key", na = "NA")
 
 
@@ -50,11 +52,11 @@ antibody_key <- read_excel("~/Documents/Data Science/AmandaSkarlupka-Project/dat
 #Take a look at the data and make sure that it loaded correctly
 ```{r}
 
-summary(p1_mab_full)
-str(p1_mab_full)
-str(ca09_mab_full)
-str(p1_sera_full)
-str(ca09_sera_full)
+summary(p1_mab)
+str(p1_mab)
+str(ca09_mab)
+str(p1_sera)
+str(ca09_sera)
 
 ```
 
@@ -62,18 +64,6 @@ str(ca09_sera_full)
 Move the monoclonal antibody concentrations and the sera titers into the same column
 
 ```{r}
-
-p1_mab <- p1_mab_full %>%
-  gather(key = "antigen", value = "concentration", 2:19)
-
-ca09_mab <- ca09_mab_full %>%
-  gather(key = "antigen", value = "concentration", 2:19)
-
-p1_sera <- p1_sera_full %>%
-  gather(key = "antigen", value = "titer", 2:19)
-
-ca09_sera <- ca09_sera_full %>%
-  gather(key = "antigen", value = "titer", 2:19)
 
 ```
 
@@ -95,13 +85,13 @@ The antibody concentrations are in two fold dilutions, the titers will be log2(v
 ```{r}
 
 p1_mab$log2 <- log2(p1_mab$concentration)
-p1_mab$dilution <- log2(1/(p1_mab$concentration/20))*2
+p1_mab$dilution <- 20/p1_mab$concentration
 
 p1_sera$log2 <- log2(p1_sera$titer)
 
 
 ca09_mab$log2 <- log2(ca09_mab$concentration)
-ca09_mab$dilution <- log2(1/(ca09_mab$concentration/20))*2
+ca09_mab$dilution <- 20/ca09_mab$concentration
 
 ca09_sera$log2 <- log2(ca09_sera$titer)
 
@@ -122,8 +112,14 @@ p1_sera <- p1_sera %>%
 ca09_mab <- ca09_mab %>%
   left_join(antibody_key, by = "clone_name")
 
+ca09_mab <- ca09_mab %>%
+  left_join(antigen_key, by = c("antigen" = "short_name"))
+
 p1_mab <- p1_mab %>%
   left_join(antibody_key, by = "clone_name")
+
+p1_mab <- p1_mab %>%
+  left_join(antigen_key, by = c("antigen" = "short_name"))
 ```
 
 
@@ -131,15 +127,36 @@ save data as RDS
 
 ```{r}
 
-saveRDS(ca09_mab, file = "~/Documents/Data Science/AmandaSkarlupka-Project/data/processed_data/ca09mab_processed_data.rds")
-saveRDS(ca09_sera, file = "~/Documents/Data Science/AmandaSkarlupka-Project/data/processed_data/ca09sera_processed_data.rds")
-saveRDS(p1_mab, file = "~/Documents/Data Science/AmandaSkarlupka-Project/data/processed_data/p1mab_processed_data.rds")
-saveRDS(p1_sera, file = "~/Documents/Data Science/AmandaSkarlupka-Project/data/processed_data/p1sera_processed_data.rds")
-#saveRDS(p1_sera_full, file = "./data/processed_data/p1sera_full_processed_data.rds")
-#saveRDS(CA09_sera_full, file = "./data/processed_data/CA09sera_full_processed_data.rds")
-#saveRDS(p1_mabs_full, file = "./data/processed_data/p1mabs_full_processed_data.rds")
-#saveRDS(CA09_mabs_full, file = "./data/processed_data/CA09mabs_full_processed_data.rds")
 
 ```
 
+For PCA analysis the data needs to be in a matrix.
+
+```{r}
+
+p1_mab_split <- p1_mab %>%
+  gather(key = "antigen", value = "concentration", 2:19)
+
+ca09_mab_split <- ca09_mabl %>%
+  gather(key = "antigen", value = "concentration", 2:19)
+
+p1_sera_split <- p1_sera %>%
+  gather(key = "antigen", value = "titer", 2:19)
+
+ca09_sera_split <- ca09_sera %>%
+  gather(key = "antigen", value = "titer", 2:19)
+
+```
+```{r}
+
+saveRDS(ca09_mab_split, file = here("data", "processed_data", "ca09mab_processed_data.rds"))
+saveRDS(ca09_sera_split, file = here("data", "processed_data", "ca09sera_processed_data.rds"))
+saveRDS(p1_mab_split, file = here("data", "processed_data", "p1mab_processed_data.rds"))
+saveRDS(p1_sera_split, file = here("data", "processed_data", "p1sera_processed_data.rds"))
+saveRDS(p1_sera, file = here("data", "processed_data", "p1sera_matrix.rds"))
+saveRDS(ca09_sera, file = here("data", "processed_data", "ca09sera_matrix.rds"))
+saveRDS(p1_mab, file = here("data", "processed_data", "p1mab_matrix.rds"))
+saveRDS(ca09_mab, file = here("data", "processed_data", "ca09mab_matrix.rds"))
+
+```
 

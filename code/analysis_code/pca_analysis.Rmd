@@ -1,0 +1,187 @@
+---
+title: "PCA Analysis"
+author: "Amanda Skarlupka"
+date: "10/30/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(ggplot2)
+library(forcats)
+library(broom)
+library(ggbiplot)
+library(dplyr)
+library(here)
+```
+
+
+
+#Principal component analysis on antibody responses to different viruses
+#Need to remove all the mice that do not have full matrix
+p1_sera_full <- p1_sera_full %>%
+  select(-c(4:7, 13:14, 16:17)) %>%
+  filter(mouse != 2 & mouse != 10)
+
+#Need to remove mice that do not have variability for a virus. 
+p1_sera_full_f <- p1_sera_full[,apply(p1_sera_full, 2, var, na.rm=TRUE) != 0]
+
+#now can do pca analysis
+p1_sera_full.pca <- prcomp(p1_sera_full_f, center = TRUE, scale = TRUE)
+summary(p1_sera_full.pca)
+str(p1_sera_full.pca)
+
+p1_sera_pca_variance <- plot(p1_sera_full.pca, type = "l")
+
+ggsave(filename="./results/p1_sera_var_figure5.png", plot = p1_sera_pca_variance)
+
+g <- ggbiplot(p1_sera_full.pca, obs.scale = 1, var.scale = 1, groups = p1_sera_full_f$mouse)
+
+ggsave(filename="./results/p1_sera_figure6.png", plot = g)
+
+#Repeat with CA09_sera
+#Need to remove all the mice that do not have full matrix
+CA09_sera_full_f <- CA09_sera_full %>%
+  select(-c(4:7, 13:14, 16:17))
+
+#Need to remove mice that do not have variability for a virus. 
+CA09_sera_full_f <- CA09_sera_full_f[,apply(CA09_sera_full_f, 2, var, na.rm=TRUE) != 0]
+
+#now can do pca analysis
+CA09_sera_full.pca <- prcomp(CA09_sera_full_f, center = TRUE, scale = TRUE)
+summary(CA09_sera_full.pca)
+str(CA09_sera_full.pca)
+
+CA09_sera_pca_variance <- plot(CA09_sera_full.pca, type = "l")
+
+ggsave(filename="./results/CA09_sera_var_figure7.png", plot = CA09_sera_pca_variance)
+
+h <- ggbiplot(CA09_sera_full.pca, obs.scale = 1, var.scale = 1, groups = CA09_sera_full_f$mouse)
+  
+ggsave(filename="./results/CA09_sera_figure8.png", plot = h)
+
+
+
+#There's not much variation, but if we add together the CA09_sera maybe we can see a little more variation
+CA09_sera_full <- CA09_sera_full %>%
+  select(-c(4:7, 13:14, 16:17))
+#renumber p1 mice so they don't overlap with the CA09 mice ids
+p1_sera_full$mouse <- c(7:14)
+
+sera_full <- bind_rows("CA09" = CA09_sera_full, "P1" = p1_sera_full, .id = "groups")
+#ok now that we have them all together and all the NAs are gone, we now need to get rid of the columns that have no variation.
+sera_full_f <- sera_full%>%
+  select(-c(1:2, 9:12))
+
+sera_full.pca <- prcomp(sera_full_f, center = TRUE, scale = TRUE)
+summary(sera_full.pca)
+str(p1_sera_full.pca)
+
+sera_pca_variance <- plot(sera_full.pca, type = "l")
+
+i <- ggbiplot(sera_full.pca, obs.scale = 1, var.scale = 1, groups = sera_full$groups, labels = sera_full$mouse) +
+  labs(title = "PCA of CA/09 and P1 Sera to swH1N1/N2 viruses") +
+  xlim(c(3.5, -3.5)) + 
+  ylim(c(-3.5, 3.5))
+
+i
+ggsave(filename="./results/all_sera_figure9.png", plot = i)
+
+#The plot above is also known as variable correlation plots. It shows the relationships between all variables. It can be interpreted as follow:
+
+#Positively correlated variables are grouped together.
+#egatively correlated variables are positioned on opposite sides of the plot origin (opposed quadrants).
+#The distance between variables and the origin measures the quality of the variables on the factor map. Variables that are away from the origin are well represented on the factor map.
+
+#I want to try this for the monoclonals now too.
+
+CA09_mabs_full <- CA09_mabs_full %>%
+  select(-17) %>%
+  na.omit()
+
+CA09_mabs_full$id <- c(1:14)
+as.factor(CA09_mabs_full$id)
+
+#Need to remove monoclonal names
+CA09_mabs_full_f <- CA09_mabs_full %>%
+  select(-1)
+#Need to remove mice that do not have variability ofr a virus. 
+CA09_mabs_full_f <- CA09_mabs_full_f[,apply(CA09_mabs_full_f, 2, var, na.rm=TRUE) != 0]
+
+#now can do pca analysis
+CA09_mabs_full.pca <- prcomp(CA09_mabs_full_f, center = TRUE, scale = TRUE)
+summary(CA09_mabs_full.pca)
+str(CA09_mabs_full.pca)
+
+CA09_mabs_pca_variance <- plot(CA09_mabs_full.pca, type = "l")
+
+ggsave(filename="./results/CA09_mabs_var_figure10.png", plot = CA09_mabs_pca_variance)
+
+j <- ggbiplot(CA09_mabs_full.pca, obs.scale = 1, var.scale = 1, groups = CA09_mabs_full$monoclonal)
+j
+ggsave(filename="./results/CA09_mabs_figure11.png", plot = j)
+
+#Do with p1 monoclonals
+
+p1_mabs_full <- p1_mabs_full %>%
+  select(-17) %>%
+  na.omit()
+
+p1_mabs_full$id <- c(1:5)
+as.factor(p1_mabs_full$id)
+
+#Need to remove monoclonal names
+p1_mabs_full_f <- p1_mabs_full %>%
+  select(-1)
+#Need to remove mice that do not have variability ofr a virus. 
+p1_mabs_full_f <- p1_mabs_full_f[,apply(p1_mabs_full_f, 2, var, na.rm=TRUE) != 0]
+
+#now can do pca analysis
+p1_mabs_full.pca <- prcomp(p1_mabs_full_f, center = TRUE, scale = TRUE)
+summary(p1_mabs_full.pca)
+str(p1_mabs_full.pca)
+
+p1_mabs_pca_variance <- plot(p1_mabs_full.pca, type = "l")
+
+ggsave(filename="./results/p1_mabs_var_figure11.png", plot = p1_mabs_pca_variance)
+
+k <- ggbiplot(p1_mabs_full.pca, obs.scale = 1, var.scale = 1, groups = p1_mabs_full$monoclonal)
+k
+ggsave(filename="./results/p1_mabs_figure12.png", plot = k)
+
+
+#now lets put them together
+
+#renumber p1 mice so they don't overlap with the CA09 mice ids
+p1_mabs_full$id <- c(15:19)
+
+mabs_full <- bind_rows("CA09" = CA09_mabs_full, "P1" = p1_mabs_full, .id = "groups")
+#ok now that we have them all together and all the NAs are gone, we now need to get rid of the columns that have no variation.
+mabs_full_f <- mabs_full%>%
+  select(-c(1:2, 6, 16:17, 19, 21))
+  
+
+mabs_full.pca <- prcomp(mabs_full_f, center = TRUE, scale = TRUE)
+summary(mabs_full.pca)
+str(mabs_full.pca)
+
+mabs_pca_variance <- plot(mabs_full.pca, type = "l")
+
+ggsave(filename="./results/all_mabs_var_figure13.png", plot = mabs_pca_variance)
+
+l <- ggbiplot(mabs_full.pca,
+              obs.scale = 1,
+              var.scale = 1,
+              groups = mabs_full$groups,
+              labels = mabs_full$id) +
+  labs(title = "PCA of CA/09 and P1 mAbs to swH1N1/N2 viruses") +
+  xlim(c(-4, 4)) + 
+  ylim(c(-4, 4))
+
+l
+ggsave(filename="./results/all_mabs_figure14.png", plot = l)
+
+#renumber p1 mice so they don't overlap with the CA09 mice ids

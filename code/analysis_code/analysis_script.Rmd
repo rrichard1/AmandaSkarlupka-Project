@@ -1,5 +1,5 @@
 ---
-title: "analysis_script_1"
+title: "Overall Responses"
 author: "Amanda Skarlupka"
 date: "10/27/2019"
 output: html_document
@@ -17,15 +17,16 @@ library(forcats)
 library(broom)
 library(ggbiplot)
 library(dplyr)
+library(here)
 ```
 
 
 Load the processed data
 ```{r}
-ca09_mab <- readRDS("./data/processed_data/ca09mab_processed_data.rds")
-ca09_sera <- readRDS("./data/processed_data/ca09sera_processed_data.rds")
-p1_mab <- readRDS("./data/processed_data/p1mab_processed_data.rds")
-p1_sera <- readRDS("./data/processed_data/p1sera_processed_data.rds")
+ca09_mab <- readRDS(here("data", "processed_data", "ca09mab_processed_data.rds"))
+ca09_sera <- readRDS(here("data", "processed_data", "ca09sera_processed_data.rds"))
+p1_mab <- readRDS(here("data", "processed_data", "p1mab_processed_data.rds"))
+p1_sera <- readRDS(here("data", "processed_data", "p1sera_processed_data.rds"))
 ```
 
 
@@ -66,7 +67,9 @@ p1_mab %>%
   geom_point(aes(shape = lineage, color = sublineage, size = 3)) +
   theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
   scale_shape_manual(values = c(15:18)) +
+  scale_y_continuous(trans = "log2") +
   labs(y = "Dilution from 20ug/ml") 
+
 ```
 
 
@@ -74,13 +77,14 @@ p1_mab %>%
 #Graph of all the monoclonal responses
 
 ```{r}
-p1_mab_all <- p1_mab %>%
-  ggplot(aes(y = dilution, x = antigen, shape = lineage, color = sublineage, size = 2)) +
+p1mab_by_mab <- p1_mab %>%
+  ggplot(aes(y = dilution, x = antigen, shape = lineage, color = sublineage), size = 0.5) +
   geom_point() +
   theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
   labs(y = "Dilution from 20ug/ml") +
   scale_shape_manual(values = c(15:18)) +
-  facet_wrap(vars(clone_name), scales = "free_x")
+  scale_y_continuous(trans = "log2") +
+  facet_wrap(vars(clone_name))
 
 pu <- p1_mab %>%
   arrange(elisa_specificity) %>%
@@ -88,15 +92,17 @@ pu <- p1_mab %>%
 pu <- unique(pu)
 p1_mab$clone_name <- factor(p1_mab$clone_name, levels = pu, ordered = TRUE)
 
-p1_mab %>%
-  ggplot(aes(y = dilution, x = clone_name, color = elisa_specificity, size = 2)) +
+p1mab_by_antigen <- p1_mab %>%
+  ggplot(aes(y = dilution, x = clone_name, color = elisa_specificity), size = 0.5) +
   geom_point() +
   theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
   labs(y = "Dilution from 20ug/ml") +
   scale_shape_manual(values = c(15:18)) +
-  facet_wrap(vars(antigen), scales = "free_x")
+  scale_y_continuous(trans = "log2") +
+  facet_wrap(vars(antigen))
 
-ggsave(filename="./results/p1_mab_response.png", plot = p1_mab_all)
+ggsave(filename= here("results", "p1mab_by_mab.png"), plot = p1mab_by_mab)
+ggsave(filename = here("results", "p1mab_by_antigen.png"), plot = p1mab_by_antigen)
 ```
 Repeat it for the CA09 specific monoclonals
 ```{r}
@@ -125,243 +131,32 @@ cn <- ca09_mab %>%
 cn <- unique(cn)
 ca09_mab$clone_name <- factor(ca09_mab$clone_name, levels = (cn), ordered=TRUE)
 
-ca09_mab %>%
-  ggplot(aes(y = dilution, x = antigen, shape = lineage, color = sublineage, size = 2)) +
+ca09mab_by_mab <- ca09_mab %>%
+  ggplot(aes(y = dilution, x = antigen, shape = lineage, color = sublineage), size = 0.5) +
   geom_point() +
   theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
   labs(y = "Dilution from 20ug/ml") +
   scale_shape_manual(values = c(15:18)) +
-  facet_wrap(vars(clone_name), scales = "free_x")
+  scale_y_continuous(trans = "log2") +
+  facet_wrap(vars(clone_name))
 
-ca09_mab %>%
-  ggplot(aes(y = dilution, x = clone_name, shape = elisa_specificity, color = raised_against, size = 2)) +
+ca09mab_by_antigen <- ca09_mab %>%
+  ggplot(aes(y = dilution, x = clone_name, shape = elisa_specificity, color = raised_against), size = 0.5) +
   geom_point() +
   theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
   labs(y = "Dilution from 20ug/ml") +
   scale_shape_manual(values = c(15:18)) +
-  facet_wrap(vars(antigen), scales = "free_x")
+  scale_y_continuous(trans = "log2") +
+  facet_wrap(vars(antigen))
 
-#ggsave(filename="./results/p1_mab_response.png", plot = p1_mab_all)
+ca09mab_by_antigen
+
+ggsave(filename = here("results", "ca09mab_by_mab.png"), plot = ca09mab_by_mab)
+ggsave(filename = here("results", "ca09mab_by_antigen.png"), plot = ca09mab_by_antigen)
 ```
 potentially include the SW1-4 COBRA VLPs. 
 
 
-p1_monoclonal_responses <- p1_mabs %>%
-  ggplot(aes(y = 1/concentration, x = antigen, color = lineage)) +
-  geom_point() +
-  scale_y_continuous(trans='log2') +
-  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
-  labs(y = "Inverse Concentration") +
-  facet_wrap(vars(monoclonal), scales = "free_x")
 
-ggsave(filename="./results/resultfigure2.png", plot = p1_monoclonal_responses)
-
-p1_sera_responses <- p1_sera %>%
-  ggplot(aes(y = titer, x = antigen, color = lineage, alpha = 0.5)) +
-  geom_point() +
-  scale_y_continuous(trans='log2') +
-  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
-  labs(y = "Inverse Concentration")
-
-ggsave(filename="./results/resultfigure3.png", plot = p1_sera_responses)
-
-CA09_sera_responses <- CA09_sera %>%
-  ggplot(aes(y = titer, x = antigen, color = lineage, alpha = 0.5)) +
-  geom_point() +
-  scale_y_continuous(trans='log2') +
-  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
-  labs(y = "Inverse Concentration")
-
-ggsave(filename="./results/resultfigure4.png", plot = CA09_sera_responses)
-
-
-#graph <- function(x) {
-#CA09_mabs %>%
- # group_by(monoclonal == x) %>%
-#  ggplot(aes(y = 1/concentration, x = reorder(antigen, geo_mean_CA09$geo_mean))) +
-  #geom_point() +
-#  scale_y_continuous(trans='log2') +
-#  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
- # labs(y = "Inverse Concentration")
-#}
-#This was my attempt to make a function that plotted everything. 
-CAmabs <- unique(CA09_mabs$monoclonal)
-
-for (i in CAmabs) {
- d <- CA09_mabs %>%
-    filter(monoclonal == i) %>%
-    ggplot(aes(y = 1/concentration, x = reorder(antigen, geo_mean_CA09$geo_mean))) +
-    geom_point() +
-    scale_y_continuous(trans='log2', limits = (20)) +
-    theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
-    labs(y = "Inverse Concentration", title = i)
-}
-
-
-#Principal component analysis on antibody responses to different viruses
-#Need to remove all the mice that do not have full matrix
-p1_sera_full <- p1_sera_full %>%
-  select(-c(4:7, 13:14, 16:17)) %>%
-  filter(mouse != 2 & mouse != 10)
-
-#Need to remove mice that do not have variability for a virus. 
-p1_sera_full_f <- p1_sera_full[,apply(p1_sera_full, 2, var, na.rm=TRUE) != 0]
-
-#now can do pca analysis
-p1_sera_full.pca <- prcomp(p1_sera_full_f, center = TRUE, scale = TRUE)
-summary(p1_sera_full.pca)
-str(p1_sera_full.pca)
-
-p1_sera_pca_variance <- plot(p1_sera_full.pca, type = "l")
-
-ggsave(filename="./results/p1_sera_var_figure5.png", plot = p1_sera_pca_variance)
-
-g <- ggbiplot(p1_sera_full.pca, obs.scale = 1, var.scale = 1, groups = p1_sera_full_f$mouse)
-
-ggsave(filename="./results/p1_sera_figure6.png", plot = g)
-
-#Repeat with CA09_sera
-#Need to remove all the mice that do not have full matrix
-CA09_sera_full_f <- CA09_sera_full %>%
-  select(-c(4:7, 13:14, 16:17))
-
-#Need to remove mice that do not have variability for a virus. 
-CA09_sera_full_f <- CA09_sera_full_f[,apply(CA09_sera_full_f, 2, var, na.rm=TRUE) != 0]
-
-#now can do pca analysis
-CA09_sera_full.pca <- prcomp(CA09_sera_full_f, center = TRUE, scale = TRUE)
-summary(CA09_sera_full.pca)
-str(CA09_sera_full.pca)
-
-CA09_sera_pca_variance <- plot(CA09_sera_full.pca, type = "l")
-
-ggsave(filename="./results/CA09_sera_var_figure7.png", plot = CA09_sera_pca_variance)
-
-h <- ggbiplot(CA09_sera_full.pca, obs.scale = 1, var.scale = 1, groups = CA09_sera_full_f$mouse)
-  
-ggsave(filename="./results/CA09_sera_figure8.png", plot = h)
-
-
-
-#There's not much variation, but if we add together the CA09_sera maybe we can see a little more variation
-CA09_sera_full <- CA09_sera_full %>%
-  select(-c(4:7, 13:14, 16:17))
-#renumber p1 mice so they don't overlap with the CA09 mice ids
-p1_sera_full$mouse <- c(7:14)
-
-sera_full <- bind_rows("CA09" = CA09_sera_full, "P1" = p1_sera_full, .id = "groups")
-#ok now that we have them all together and all the NAs are gone, we now need to get rid of the columns that have no variation.
-sera_full_f <- sera_full%>%
-  select(-c(1:2, 9:12))
-
-sera_full.pca <- prcomp(sera_full_f, center = TRUE, scale = TRUE)
-summary(sera_full.pca)
-str(p1_sera_full.pca)
-
-sera_pca_variance <- plot(sera_full.pca, type = "l")
-
-i <- ggbiplot(sera_full.pca, obs.scale = 1, var.scale = 1, groups = sera_full$groups, labels = sera_full$mouse) +
-  labs(title = "PCA of CA/09 and P1 Sera to swH1N1/N2 viruses") +
-  xlim(c(3.5, -3.5)) + 
-  ylim(c(-3.5, 3.5))
-
-i
-ggsave(filename="./results/all_sera_figure9.png", plot = i)
-
-#The plot above is also known as variable correlation plots. It shows the relationships between all variables. It can be interpreted as follow:
-
-#Positively correlated variables are grouped together.
-#egatively correlated variables are positioned on opposite sides of the plot origin (opposed quadrants).
-#The distance between variables and the origin measures the quality of the variables on the factor map. Variables that are away from the origin are well represented on the factor map.
-
-#I want to try this for the monoclonals now too.
-
-CA09_mabs_full <- CA09_mabs_full %>%
-  select(-17) %>%
-  na.omit()
-
-CA09_mabs_full$id <- c(1:14)
-as.factor(CA09_mabs_full$id)
-
-#Need to remove monoclonal names
-CA09_mabs_full_f <- CA09_mabs_full %>%
-  select(-1)
-#Need to remove mice that do not have variability ofr a virus. 
-CA09_mabs_full_f <- CA09_mabs_full_f[,apply(CA09_mabs_full_f, 2, var, na.rm=TRUE) != 0]
-
-#now can do pca analysis
-CA09_mabs_full.pca <- prcomp(CA09_mabs_full_f, center = TRUE, scale = TRUE)
-summary(CA09_mabs_full.pca)
-str(CA09_mabs_full.pca)
-
-CA09_mabs_pca_variance <- plot(CA09_mabs_full.pca, type = "l")
-
-ggsave(filename="./results/CA09_mabs_var_figure10.png", plot = CA09_mabs_pca_variance)
-
-j <- ggbiplot(CA09_mabs_full.pca, obs.scale = 1, var.scale = 1, groups = CA09_mabs_full$monoclonal)
-j
-ggsave(filename="./results/CA09_mabs_figure11.png", plot = j)
-
-#Do with p1 monoclonals
-
-p1_mabs_full <- p1_mabs_full %>%
-  select(-17) %>%
-  na.omit()
-
-p1_mabs_full$id <- c(1:5)
-as.factor(p1_mabs_full$id)
-
-#Need to remove monoclonal names
-p1_mabs_full_f <- p1_mabs_full %>%
-  select(-1)
-#Need to remove mice that do not have variability ofr a virus. 
-p1_mabs_full_f <- p1_mabs_full_f[,apply(p1_mabs_full_f, 2, var, na.rm=TRUE) != 0]
-
-#now can do pca analysis
-p1_mabs_full.pca <- prcomp(p1_mabs_full_f, center = TRUE, scale = TRUE)
-summary(p1_mabs_full.pca)
-str(p1_mabs_full.pca)
-
-p1_mabs_pca_variance <- plot(p1_mabs_full.pca, type = "l")
-
-ggsave(filename="./results/p1_mabs_var_figure11.png", plot = p1_mabs_pca_variance)
-
-k <- ggbiplot(p1_mabs_full.pca, obs.scale = 1, var.scale = 1, groups = p1_mabs_full$monoclonal)
-k
-ggsave(filename="./results/p1_mabs_figure12.png", plot = k)
-
-
-#now lets put them together
-
-#renumber p1 mice so they don't overlap with the CA09 mice ids
-p1_mabs_full$id <- c(15:19)
-
-mabs_full <- bind_rows("CA09" = CA09_mabs_full, "P1" = p1_mabs_full, .id = "groups")
-#ok now that we have them all together and all the NAs are gone, we now need to get rid of the columns that have no variation.
-mabs_full_f <- mabs_full%>%
-  select(-c(1:2, 6, 16:17, 19, 21))
-  
-
-mabs_full.pca <- prcomp(mabs_full_f, center = TRUE, scale = TRUE)
-summary(mabs_full.pca)
-str(mabs_full.pca)
-
-mabs_pca_variance <- plot(mabs_full.pca, type = "l")
-
-ggsave(filename="./results/all_mabs_var_figure13.png", plot = mabs_pca_variance)
-
-l <- ggbiplot(mabs_full.pca,
-              obs.scale = 1,
-              var.scale = 1,
-              groups = mabs_full$groups,
-              labels = mabs_full$id) +
-  labs(title = "PCA of CA/09 and P1 mAbs to swH1N1/N2 viruses") +
-  xlim(c(-4, 4)) + 
-  ylim(c(-4, 4))
-
-l
-ggsave(filename="./results/all_mabs_figure14.png", plot = l)
-
-#renumber p1 mice so they don't overlap with the CA09 mice ids
 
   
