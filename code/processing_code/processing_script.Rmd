@@ -3,13 +3,13 @@ title: "processing_script"
 author: "Amanda Skarlupka"
 date: "10/26/2019"
 output:
-  word_document: default
-  pdf_document: default
   html_document:
     df_print: paged
+  pdf_document: default
+  word_document: default
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, echo = FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -49,7 +49,7 @@ antibody_key <- read_excel(here("data", "raw_data", "data.xlsx"),
 
 
 
-#Take a look at the data and make sure that it loaded correctly
+Take a look at the data and make sure that it loaded correctly
 ```{r}
 
 summary(p1_mab_full)
@@ -110,7 +110,7 @@ ca09_sera$log2 <- log2(ca09_sera$titer)
 ```
 
 
-#The lineages of the viruses need to be added. The antigen_key contains all the information about the viruses. 
+The lineages of the viruses need to be added. The antigen_key contains all the information about the viruses. 
 
 ```{r}
 #add the antigen key to the sera data for switch out the antigen with the antigen key for ease of script writing

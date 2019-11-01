@@ -1,0 +1,91 @@
+---
+title: "Antibody Key Table"
+author: "Amanda Skarlupka"
+date: "10/31/2019"
+output: html_document
+---
+
+The goal is to create a presentable table to describe the antibodies used in this paper. 
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+```{r}
+library(readxl)
+library(knitr)
+library(tidyverse)
+library(readxl)
+library(gtools)
+library(stringr)
+library(gdata)
+library(sjPlot)
+library(sjlabelled)
+library(stargazer)
+library(here)
+
+```
+
+
+Import the antibody key
+```{r}
+
+antibody_key <- readRDS(here("data", "processed_data", "antibody_key.rds"))
+antibody_table <- antibody_key
+
+```
+
+Create a dataset of labels 
+```{r}
+
+#Change the raised against
+antibody_table$raised_against[antibody_table$raised_against == "p1"] <- "P1 COBRA"
+antibody_table$raised_against[antibody_table$raised_against == "ca09"] <- "California/2009"
+antibody_table$raised_against[antibody_table$raised_against == "br07"] <- "Brisbane/2007"
+antibody_table$raised_against[antibody_table$raised_against == "sc18"] <- "South Carolina/1918"
+antibody_table$raised_against[antibody_table$raised_against == "pr34"] <- "Puerto Rico/1934"
+
+#Remove the unnecessary key variable
+antibody_table <- antibody_table %>%
+  select(-key)
+
+#Change the specificity nomenclature
+antibody_table$elisa_specificity[antibody_table$elisa_specificity == "narrow_ca09"] <- "Narrow (CA/09)"
+antibody_table$elisa_specificity[antibody_table$elisa_specificity == "narrow_seasonal"] <- "Narrow (H1 Seasonal)"
+antibody_table$elisa_specificity[antibody_table$elisa_specificity == "narrow_1918pdm"] <- "Narrow (SC/1918)"
+antibody_table$elisa_specificity[antibody_table$elisa_specificity == "broad"] <- "Broad"
+antibody_table$elisa_specificity[antibody_table$elisa_specificity == "narrow"] <- "Limited"
+antibody_table$elisa_specificity[antibody_table$elisa_specificity == "p1"] <- "Narrow (P1 COBRA)"
+
+#Add the source of antibody
+antibody_table <- antibody_table %>%
+  mutate(raised_by = ifelse(
+    str_detect(antibody_table$order_name, "FR-49*") == TRUE, 
+    "IRR", 
+    ifelse(
+      str_detect(antibody_table$order_name, "NR*") == TRUE,
+      "BEI",
+      "Sautto, 2019"
+    )))
+
+#Fix the Monoclonal Names for pub
+antibody_table[c(15,19:22,24:26,30),1] <- c("5B-2A12", "CA/09-02", "CA/09-09", "CA/09-11", "CA/09-15", "AT163-210-182", "AT163-333-93", "AT163-104-93", "IC5-4F8")
+
+antibody_table <- antibody_table[, c(1:3, 5, 4)]
+antibody_table
+```
+
+The table needs to be formatted for publication. 
+```{r}
+library(webshot)
+
+sjPlot::tab_df(antibody_table, col.header = c("Monoclonal", "Catalogue ID", "Raised against", "Documented Specificity", "Reference"), file = here("results", "tables", "antibody_table.html"))
+
+
+webshot(here("results", "tables", "antibody_table.html"), here("results", "tables", "antibody_table.png"))
+
+#saveRDS(antibody_table, file = here("results", "tables", "antibody_table.rds"))
+
+```
+
