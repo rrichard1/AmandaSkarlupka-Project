@@ -1,0 +1,119 @@
+---
+title: "Antigen Reference Table"
+author: "Amanda Skarlupka"
+date: "11/1/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+The goal is to create a presentable table to describe the antigens and viruses used in this paper. 
+
+```{r}
+library(readxl)
+library(knitr)
+library(tidyverse)
+library(readxl)
+library(gtools)
+library(stringr)
+library(gdata)
+library(sjPlot)
+library(sjlabelled)
+library(stargazer)
+library(here)
+library(webshot)
+
+```
+
+
+Import the antibody key
+```{r}
+
+antigen_key <- readRDS(here("data", "processed_data", "antigen_key.rds"))
+antigen_table <- antigen_key
+
+```
+
+Create a dataset of labels 
+```{r}
+
+antigen_table$subtype <- paste(antigen_table$ha_sub, antigen_table$na_sub, sep = "")
+
+
+
+antigen_table$Platform <- ifelse(antigen_table$virus == TRUE, "Virus", "VLP")
+
+antigen_table <- antigen_table %>%
+  select(-c(ha_sub, na_sub, key_name, host, virus))
+
+antigen_table[is.na(antigen_table)] <- "Not Available"
+antigen_table$sublineage[antigen_table$sublineage == "npdm"] <- "Pandemic"
+```
+
+Fix the capitalizations and underscores
+
+```{r}
+
+
+CapStr <- function(y) {
+  c <- strsplit(y, " ")[[1]]
+  paste(toupper(substring(c, 1,1)), substring(c, 2),
+      sep="", collapse=" ")
+}
+
+
+
+sublineage <- antigen_table %>%
+  pull(sublineage)
+
+sublineage <- sapply(sublineage, CapStr)
+sublineage <- str_replace_all(sublineage,"_","-")
+
+antigen_table$sublineage <- sublineage
+
+lineage <- antigen_table %>%
+  pull(lineage)
+
+lineage <- sapply(lineage, CapStr)
+lineage <- str_replace_all(lineage, "_", "-")
+
+antigen_table$lineage <- lineage
+
+```
+
+
+```{r}
+antigen_table$lineage <- factor(antigen_table$lineage, levels = c("Classical", "Human-like", "Eurasian", "Not Available"))
+antigen_table <- antigen_table %>%
+  arrange(lineage, sublineage)
+antigen_table$lineage <- as.character(antigen_table$lineage)
+
+antigen_table$lineage <- if(antigen_table$sublineage != "Not Available")
+  {
+                                paste(antigen_table$lineage, antigen_table$sublineage, sep = " - ")
+  }
+antigen_table <- antigen_table %>%
+  select(-sublineage)
+antigen_table[16:17, 3] <- "Eurasian"
+antigen_table[18,3] <- "Not Available"
+```
+
+Add the accession numbers/sequence information for the HA. 
+
+```{r}
+antigen_table$accession_number <- c("ABV25637.1", "AAF87274.1", "Not Available", "AGF68975.1", "AHB21556.1", "AKD00877.1", "AAL87867.1", "AAL87870.1", "AEX25796.1", "Not Available", "Not Available", "Not Available", "Skarlupka, 2019", "Skarlupka, 2019", "ADV69084.1", "ABD78104.1", "ACJ06667.1", "Not Available" )
+```
+
+
+The table needs to be formatted for publication and saved. 
+```{r}
+
+tab_df(antigen_table, title = "Table 2. Swine Virus HAs used for HAI assays with polyclonal sera and purifed monoclonal antibodies", col.header = c("Key", "Strain", "US Swine Lineage", "Global Swine Classification", "Subtype", "Antigen Platform", "HA Accession Number"), file = here("results", "tables", "antigen_table.html"))
+
+
+webshot(here("results", "tables", "antigen_table.html"), here("results", "tables", "antigen_table.png"))
+
+```
+

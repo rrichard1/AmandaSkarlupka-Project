@@ -1,0 +1,96 @@
+---
+title: "Reactivity of Wildtype Antibodies to Swine Viruses"
+author: "Amanda Skarlupka"
+date: "11/2/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+I need to load the packages
+
+```{r}
+library(ggplot2)
+library(forcats)
+library(broom)
+library(ggbiplot)
+library(dplyr)
+library(here)
+```
+
+I need to load the data that has the wildtype reactivity
+
+```{r}
+ca09_mab <- readRDS(here("data", "processed_data", "ca09mab_processed_data.rds"))
+ca09_sera <- readRDS(here("data", "processed_data", "ca09sera_processed_data.rds"))
+antigen_key <- readRDS(here("data", "processed_data", "antigen_key.rds"))
+p1_sera <- readRDS(here("data", "processed_data", "p1sera_processed_data.rds"))
+```
+
+ I need to compare the polyclonal and the monoclonal antibodies on the same chart. The monoclonal data are already averages of the HAI results. Therefore, I need to take the average of the sera data and add that to the mab data. The mean average needs to be taken of the log2 transformed variable because the data needs to have the geometric mean calculated for it normally (it's on a log distribution so you can't take the average of untransformed values). 
+ 
+```{r}
+ca09_sera$raised_against <- "CA/09"
+p1_sera$raised_against <- "P1 COBRA"
+ca09_sera$lineage <- as.factor(ca09_sera$lineage)
+p1_sera$lineage <- as.factor(p1_sera$lineage)
+
+ca09_sera <- ca09_sera %>%
+  filter(is.na(log2) != TRUE)
+ca09_sera$sublineage <- factor(ca09_sera$sublineage, levels = c("alpha", "beta", "gamma", "gamma_2", "npdm", "delta_1", "delta_2"))
+
+p1_sera <- p1_sera %>%
+  filter(is.na(log2) != TRUE)
+p1_sera$sublineage <- factor(p1_sera$sublineage, levels = c("alpha", "beta", "gamma", "gamma_2", "npdm", "delta_1", "delta_2"))
+
+#arrange the x-axis according to the levels of lineage
+lev <- ca09_sera %>%
+  arrange(lineage, sublineage) %>%
+  pull(antigen)
+lev <- unique(lev)
+
+ca09_sera$antigen <- factor(ca09_sera$antigen, levels = lev)
+p1_sera$antigen <- factor(p1_sera$antigen, levels = lev)
+
+sera <- bind_rows(ca09_sera, p1_sera)
+a <- ifelse(sera$lineage == "classical",
+            "red",
+            ifelse(sera$lineage == "human_like", 
+            "blue",
+            "black"))
+
+sera_fig1 <- sera %>%
+  ggplot(aes(x = antigen, y = log2, fill = raised_against)) +
+  geom_boxplot(position = "dodge", alpha = 0.25) +
+  scale_y_continuous(breaks = seq(2.32, 14.32, 1)) +
+  geom_dotplot(binaxis = "y", stackdir = "center", position = "dodge", dotsize = 0.25) +
+  labs(x = "",
+    y = "Log2 (HAI Titer)",
+    title = "A/California/07/2009 Polyclonal Sera Inhibits Swine Virus Hemagglutination") +
+  theme_bw() +
+  scale_fill_discrete(name = "Sera Origin") +
+  scale_color_discrete(name = "Sublineage", labels = c("Alpha", "Beta", "Gamma", "Gamma 2", "Pandemic", "Delta-1", "Delta-2", "Unavailable")) +
+  scale_shape_discrete(name = "Lineage", labels = c("Classical", "Eurasian", "Human-like"))+
+  geom_hline(aes(yintercept = 2.23), linetype = "dashed") +
+  theme(axis.text.y = element_text(colour = c("red", "red", "red", "red", "red", "red", "red", "black", "black", "blue", "blue"))) +
+  coord_flip()
+
+ggsave(filename = here("results", "figures", "sera_fig1.png"), plot = sera_fig1)
+
+```
+ 
+I just can't compare the polyclonal sera and the monoclonals on the same graph. 
+```{r}
+ca09 %>%
+  ggplot() +
+  geom_point(data = avg_sera, aes(x = "CA/09 Sera", y = log2)) +
+  geom_point(aes(x = clone_name, y = dilution)) +
+  scale_y_continuous(trans = "log2")+
+  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
+  labs(y = "Dilution from 20ug/ml") + 
+  facet_wrap(vars(antigen))
+```
+ 
+ 

@@ -41,41 +41,22 @@ We have data about the differences where the antibodies bind. This data may be a
 #### Monoclonal Antibody Production
 The monoclonal antibodies used for the assays are described in Table 1. 
 
-```{r resultfigure,  fig.cap='Analysis figure.', echo=FALSE}
+```{r resulttable1,  fig.cap='Table1.', echo=FALSE}
 knitr::include_graphics("../../results/tables/antibody_table.png")
 ```
-
-
 
 
 #### Viruses and HA antigens
 H1 viruses were obtained through the Influenza Reagents Resource (IRR), BEI Resources, the Centers for Disease Control (CDC), Sanofi-Pasteur, or the Tompkins Laboratory.  Viruses were passaged once in the same growth conditions as they were received or as per the instructions provided by the WHO or the University of Minnesota, in either embryonated chicken eggs or Madin-Darby canine kidney (MDCK) cell culture [1].  Virus lots were aliquoted for single-use applications and stored at -80°C. Hemagglutination titer of the frozen aliquots was determined with turkey RBCs. 
 
-The classification of the swine HA was determined using the Swine H1 Clade Classification Tool (http://www.fludb.org) [2] and infers both the global [2] and US [3, 4] swine H1 clade classification from the HA nucleotide sequence.  When available, virus was used for HAI assays, otherwise virus-like particles (VLP) were used. The protein accession numbers for the HA amino acid sequences used for virus-like particle production are provided. Otherwise, the amino acid sequences are provided (Supplementary Table 1). The CDS of the wild-type HAs were codon optimized for expression in human cells.   
+The classification of the swine HA was determined using the Swine H1 Clade Classification Tool (http://www.fludb.org) [2] and infers both the global [2] and US [3, 4] swine H1 clade classification from the HA nucleotide sequence.  When available, virus was used for HAI assays, otherwise virus-like particles (VLP) were used. The protein accession numbers for the HA amino acid sequences used for virus-like particle production are provided. The CDS of the wild-type HAs were codon optimized for expression in human cells.   
 
-Swine wild-type HAs were chosen to be representative of the different lineages and clades. The VLPs used for HAI included:
+Swine wild-type HAs were chosen to be representative of the different lineages and clades described in Table 2. 
 
-+ A/Swine/North Carolina/93523/2001 (1A.3.3 Gamma – 2; SW/NC/01; AAL87867.1)
-+ A/Swine/North Carolina/5043-1/2009 (1B.2.1 Delta – 2; SW/NC/5043-1/09; ADV69084.1)
-+ A/Swine/Spain/50047/2003 H1N1 (1C.2.2 Eurasian; SW/Spain/03; ABD78104.1)
-+ A/Swine/Zhejiang/1/2007 H1N1 (1C.2.3 Eurasian; SW/Zhejiang/07; ACJ06667.1)
-+ A/Swine/Wisconsin/125/1997 H1N1 (1A.1 Alpha; SW/WI/97; AAF87274.1)
-+ A/Swine/Colorado/SG1322/2009 H1N1 (1A.2 Beta; SW/CO/09; AHB21556.1)
-+ A/Swine/North Carolina/34543/2009 H1N1 (1A.3.3.2 npdm; SW/NC/34543/09; AEX25796.1)
-+ A/Swine/Iowa/1973 H1N1 (1A.1 Alpha; SW/IA/73; ABV25637.1)
-+ A/Swine/Indiana/P12439/2000 (1A.3.3 npdm; SW/IN/00; AAL87870.1)
-+ A/Swine/Minnesota/A01489606/2015 (Gamma-2; SW/MN/15; AKD00877.1)
+```{r resulttable2,  fig.cap='resulttable2.', echo=FALSE}
+knitr::include_graphics("../../results/tables/antigen_table.png")
+```
 
-When available viruses were used for HAIs. These included:
-
-+ A/Swine/Missouri/A01444664/2013 (Delta – 1)
-+ A/Swine/North Carolina/02744/2009 (Delta – 2)
-+ A/Swine/North Carolina/152702/2015 H1N2 (1B.2.1 Delta – 2)
-+ A/Swine/Utah/02861/2009 H1N2
-+ A/Swine/Illinois/02860/2009 H1N1 (pandemic)
-+ A/Swine/Minnesota/02751/2009 H1N1 (pandemic)
-+ A/Swine/1931 H1N1 (alpha)
-+ A/Swine/Nebraska/A01444614/2013 H1N1 (1A.2 Beta; SW/NE/13; AGF68975.1)
 
 #### Virus-like Particle (VLP) preparation
 
@@ -96,19 +77,20 @@ The limit of detection for the polyclonal sera HAI was 1:10, and 1:5 was used fo
 
 # Results
 
-
-## Data import and cleaning
-
-#### Processing Code 1
-
 The data was imported from the raw excel data file along with the antigen and antibody keys. 
 
-Due to a limited supply of polyclonal sera, at least one swine virus from each lineage and clade was included. The monoclonal antibody HAI antigen panel included a wider range of antigens. Therefore, the HAs not included in the sera HAIs were removed from the data sets. 
+Due to a limited supply of polyclonal sera, at least one swine virus from each lineage and clade was included. The monoclonal antibody HAI antigen panel included a wider range of antigens. Therefore, the HAs not included in the sera HAIs were removed from the analysis.
 
-Variables were created based on the raw HAI titers for both the polyclonal sera and monoclonal antibodies. The polyclonal sera titer and monoclonal antibody conentration was transformed by log base 2. Furthermore, the monoclonal antibody dilution factor was determined by dividing 20ug/ml by the endpoint concentration.  
+Variables were created based on the raw HAI titers for both the polyclonal sera and monoclonal antibodies. The polyclonal sera titer and monoclonal antibody conentration was transformed by log base 2. Furthermore, the monoclonal antibody dilution factor was determined by dividing 20ug/ml by the endpoint agglutination concentration. 
+
+Similar to the previous study between the COBRA antigens and HAI titers to swine viruses (Skarlupka, 2019 REF), the P1 and CA/09 sera had differential reactions to the groups of different swine viruses (Figure 1). 
+
+```{r resultfigure1,  fig.cap='resultfigure1.', echo=FALSE}
+knitr::include_graphics("../../results/figures/sera_fig1.png")
+```
 
 
-_Write code that reads in the file and cleans it so it's ready for analysis. Since this will be fairly long code for most datasets, it might be a good idea to have it in one or several R scripts. If that is the case, explain here briefly what each file does. The files themselves should be commented well so everyone can follow along._
+
 
 ## Univariate analysis
 
@@ -129,7 +111,7 @@ _Use one or several suitable statistical/machine learning methods to analyze you
 ## Summary and Interpretation
 _Summarize what you did, what you found and what it means._
 
-## Strengths and Limitations
+## Strengths and L imitations
 _Discuss what you perceive as strengths and limitations of your analysis._
 
 ## Conclusions

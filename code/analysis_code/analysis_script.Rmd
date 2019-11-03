@@ -74,7 +74,7 @@ p1_mab %>%
 
 
 
-#Graph of all the monoclonal responses
+Graph of all the monoclonal responses
 
 ```{r}
 p1mab_by_mab <- p1_mab %>%
@@ -156,6 +156,26 @@ ggsave(filename = here("results", "ca09mab_by_antigen.png"), plot = ca09mab_by_a
 ```
 potentially include the SW1-4 COBRA VLPs. 
 
+Graph of just wild-type H1 raised monoclonal responses.
+
+```{r}
+ca09_mab$key_name <- as.factor(ca09_mab$key_name)
+ca09_mab$key_name <- mutate(ca09_mab$key_name, funs=toupper)
+
+
+
+ca09_mab %>%
+  filter(raised_against == "ca09") %>%
+  ggplot(aes(y = dilution, x = antigen, color = lineage), size = 0.5) +
+  geom_point() +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
+  labs(y = "Dilution from 20ug/ml") +
+  scale_shape_manual(values = c(15:18)) +
+  scale_y_continuous(trans = "log2") +
+  facet_wrap(vars(clone_name))
+
+
+```
 
 
 
