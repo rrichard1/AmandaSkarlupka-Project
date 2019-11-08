@@ -68,7 +68,7 @@ sera_fig1 <- sera %>%
   geom_dotplot(binaxis = "y", stackdir = "center", position = "dodge", dotsize = 0.25) +
   labs(x = "",
     y = "Log2 (HAI Titer)",
-    title = "A/California/07/2009 Polyclonal Sera Inhibits Swine Virus Hemagglutination") +
+    title = "Polyclonal Sera Inhibition of Swine Virus Hemagglutination") +
   theme_bw() +
   scale_fill_discrete(name = "Sera Origin") +
   scale_color_discrete(name = "Sublineage", labels = c("Alpha", "Beta", "Gamma", "Gamma 2", "Pandemic", "Delta-1", "Delta-2", "Unavailable")) +
@@ -77,8 +77,8 @@ sera_fig1 <- sera %>%
   theme(axis.text.y = element_text(colour = c("red", "red", "red", "red", "red", "red", "red", "black", "black", "blue", "blue"))) +
   coord_flip()
 
-ggsave(filename = here("results", "figures", "sera_fig1.png"), plot = sera_fig1)
-
+ggsave(filename = here("results", "figures", "sera_fig1.png"), plot = sera_fig1, width = 4, height = 3, units = "in")
+sera_fig1
 ```
  
 I just can't compare the polyclonal sera and the monoclonals on the same graph. 

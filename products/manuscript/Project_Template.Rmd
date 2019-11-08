@@ -85,13 +85,27 @@ Variables were created based on the raw HAI titers for both the polyclonal sera 
 
 Similar to the previous study between the COBRA antigens and HAI titers to swine viruses (Skarlupka, 2019 REF), the P1 and CA/09 sera had differential reactions to the groups of different swine viruses (Figure 1). 
 
-```{r resultfigure1,  fig.cap='resultfigure1.', echo=FALSE}
+```{r resultfigure1,  fig.cap='Figure 1. The hemagglutination inhibition of swine viruses of polyclonal sera of mice sub-lethally challenged with either A/California/07/2009 (CA/09) or P1 COBRA viruses. The swine virus panel included representatives from the classical (red), Eurasian (black), and human-like (blue) clades.', echo=FALSE}
 knitr::include_graphics("../../results/figures/sera_fig1.png")
+```
+
+```{r}
+knitr::include_graphics(here::here("results", "figures", "p1_mab_fig2.png"))
+```
+
+```{r}
+knitr::include_graphics(here::here("results", "figures", "ca09_mab_fig4.png"))
+```
+
+```{r}
+knitr::include_graphics(here::here("results", "figures", "radar_fig3.png"))
 ```
 
 
 
-
+```{r}
+knitr::include_graphics(here::here("results", "figures", "radar_fig5.png"))
+```
 ## Univariate analysis
 
 

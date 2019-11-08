@@ -1,0 +1,211 @@
+---
+title: "P1 Monoclonal Antibody Response"
+author: "Amanda Skarlupka"
+date: "11/4/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+I need to load the packages
+
+```{r}
+library(ggplot2)
+library(forcats)
+library(broom)
+library(ggbiplot)
+library(dplyr)
+library(here)
+library(ggradar)
+library(tibble)
+library(ggpubr)
+library(scales)
+```
+
+I need to load the data that has the wildtype reactivity
+
+```{r}
+ca09_mab <- readRDS(here("data", "processed_data", "ca09mab_processed_data.rds"))
+ca09_sera <- readRDS(here("data", "processed_data", "ca09sera_processed_data.rds"))
+antigen_key <- readRDS(here("data", "processed_data", "antigen_key.rds"))
+p1_sera <- readRDS(here("data", "processed_data", "p1sera_processed_data.rds"))
+p1_mab <- readRDS(here("data", "processed_data", "p1mab_processed_data.rds"))
+```
+Pan-H1 COBRA P1 mAbs:
+
+* 4E6
+* 3A1
+* 2C5
+* 1A12
+* 1E2
+* 4H11
+
+None of these were tested against the swine viruses.
+
+Broadly-reactive COBRA P1 mAbs:
+
+* 2H6
+* 1F8
+* 4A3
+* 4G7
+* 2B9
+* 4B3
+* 3D1
+
+
+
+```{r}
+p1_mab$lineage[is.na(p1_mab$lineage)] <- "unknown"
+  
+p1_mab$lineage <- factor(p1_mab$lineage, levels = c("human_like", "unknown", "classical", "eurasian"))
+p1_mab$sublineage <- factor(p1_mab$sublineage, levels = c("alpha", "beta", "gamma", "gamma_2", "npdm", "delta_1", "delta_2"))
+p1_mab$antigen <- factor(p1_mab$antigen, levels = c("Swine/31", "Iowa/73", "WI/97", "Indiana/00", "NC/01", "Spain/2003", "Zhejiang/07", "Colorado/09", "Illinois/09", "Minnesota/09", "NC/09", "NC/34543/09", "NC/5043-1/09", "Utah/09", "Missouri/13", "Nebraska/13", "MN/15", "NC/15"), ordered = TRUE)
+f <- p1_mab %>%
+  filter(clone_name == "1F8") %>%
+  select(c(dilution, antigen, sublineage, lineage, clone_name)) %>%
+  arrange(lineage, sublineage, antigen) %>%
+  pull(antigen)
+
+p1_mab$antigen <- factor(p1_mab$antigen, levels = (f), ordered=TRUE)
+
+xt <- p1_mab %>%
+  dplyr::filter(clone_name == "4E6")
+
+pan_h1 <- c("4E6", "3A1", "2C5", "1A12", "1E2", "4H11")
+broad_p1 <- c("2H6", "1F8", "4A3", "4G7", "2B9", "4B3", "3D1")
+narrow_p1 <- c("3H6", "2A10", "4E7", "3D3", "2D8", "4H3", "2A5", "4G10", "4C5", "4A8", "4B5", "3E2", "3D7")
+cobra_p1 <- c("1B7", "3D10")
+```
+
+
+Broadly reactive figure
+```{r}
+
+broad_p1_mab <- p1_mab %>%
+  filter(clone_name %in% broad_p1) %>%
+  ggplot(aes(y = dilution, x = antigen)) +
+  geom_col(aes(shape = lineage, fill = clone_name, color = clone_name), position = "dodge") +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
+  scale_shape_manual(values = c(15:18)) +
+  scale_y_continuous(trans = "log2") +
+  scale_fill_manual(values = c("black", "red", "grey", "blue")) +
+  scale_color_manual(values = c("black", "red", "grey", "blue")) +
+  theme(axis.text.x = element_text(colour = c("blue", "blue", "blue", "blue", "grey", "red", "red", "red", "red", "red", "red", "red", "red", "red", "red", "red", "black", "black", "blue", "blue"))) +
+  labs(y = "Dilution from 20ug/ml",
+       title = "Broadly Reactive P1 Monoclonals against Swine Virus HAs")
+ggsave(filename = here::here("results", "figures", "broad_p1_mab_fig3.png"), plot = broad_p1_mab)
+```
+
+Narrowly reactive figure
+
+```{r}
+
+narrow_p1_mab <- p1_mab %>%
+  filter(clone_name %in% narrow_p1) %>%
+  ggplot(aes(y = dilution, x = antigen, fill = clone_name)) +
+  geom_col(aes(color = clone_name), position = "dodge") +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
+  scale_shape_manual(values = c(15:18)) +
+  scale_y_continuous(trans = "log2") +
+  theme(axis.text.x = element_text(colour = c("blue", "blue", "blue", "blue", "grey", "red", "red", "red", "red", "red", "red", "red", "red", "red", "red", "red", "black", "black", "blue", "blue"))) +
+  labs(y = "Dilution from 20ug/ml",
+       title = "Narrowly Reactive P1 Monoclonals against Swine Virus HAs")
+ggsave(filename = here::here("results", "figures", "narrow_p1_mab_fig3.png"), plot = narrow_p1_mab)
+```
+
+Cobra-ly reactive figure
+
+```{r}
+an <- p1_mab %>%
+  pull(antigen)
+un_antigen <- unique(an)
+
+cobra_p1_mab <- p1_mab %>%
+  filter(clone_name %in% cobra_p1) %>%
+  ggplot(aes(y = dilution, x = antigen, fill = clone_name)) +
+  geom_col(aes(color = clone_name), position = "dodge") +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
+  scale_shape_manual(values = c(15:18)) +
+  scale_color_manual(values = "black") +
+  scale_fill_manual(values = "black") +
+  scale_y_continuous(trans = "log2") +
+  theme(axis.text.x = element_text(colour = c("blue", "blue", "blue", "blue", "grey", "red", "red", "red", "red", "red", "red", "red", "red", "red", "red", "red", "black", "black", "blue", "blue"))) +
+  labs(y = "Dilution from 20ug/ml",
+       title = "P1 COBRA Specific P1 Monoclonals against Swine Virus HAs")
+ggsave(filename = here::here("results", "figures", "cobra_p1_mab_fig3.png"), plot = cobra_p1_mab)
+
+```
+
+
+
+```{r}
+mabs <- c(broad_p1, narrow_p1, cobra_p1)
+
+p1_mab_fig2 <- p1_mab %>%
+  filter(clone_name %in% mabs) %>%
+  ggplot(aes(y = dilution, x = antigen)) +
+  geom_col(aes(shape = lineage, fill = clone_name, color = clone_name), position = "dodge") +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
+  scale_shape_manual(values = c(15:18)) +
+  scale_y_continuous(trans = "log2") +
+  theme(axis.text.x = element_text(colour = c("blue", "blue", "blue", "blue", "grey", "red", "red", "red", "red", "red", "red", "red", "red", "red", "red", "red", "black", "black", "blue", "blue"))) +
+  labs(y = "Dilution from 20ug/ml",
+       title = "P1 Monoclonals against Swine Virus HAs") +
+  facet_grid(rows= vars(elisa_specificity))
+ggsave(filename = here::here("results", "figures", "p1_mab_fig2.png"), plot = p1_mab_fig2)
+```
+
+
+Create a radar plot to try and visualize the differences of the broad, narrow, and cobra specific monoclonals in one plot. 
+```{r}
+mabs <- c(broad_p1, narrow_p1, cobra_p1)
+
+p1_mab_full <- readRDS(here("data", "processed_data", "p1mab_full.rds"))
+p1_mab_full[, c(2:19)] <- log2(20/p1_mab_full[,c(2:19)])
+
+p1_mab_broad <- p1_mab_full %>%
+  filter(clone_name %in% broad_p1)
+
+radar_broad <- ggradar(p1_mab_broad, values.radar = c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10), grid.max = 10, group.point.size = 1, group.line.width = 0.5, legend.title = "Broad reactivity")
+
+p1_mab_narrow <- p1_mab_full %>%
+  filter(clone_name %in% narrow_p1)
+
+radar_narrow <- ggradar(p1_mab_narrow, values.radar = c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10), grid.max = 10, group.point.size = 1, group.line.width = 0.5, legend.title = "Narrow reactivity")
+
+p1_mab_cobra <- p1_mab_full %>%
+  filter(clone_name %in% cobra_p1)
+
+radar_cobra <- ggradar(p1_mab_cobra, values.radar = c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10), grid.max = 10, group.point.size = 1, group.line.width = 0.5, legend.title = "Cobra reactivity", legend.text.size = 4, plot.legend = TRUE)
+
+
+radar_fig3 <- ggarrange(radar_broad, radar_narrow, radar_cobra, ncol=3, nrow = 1)
+
+ggsave(filename = here::here("results", "figures", "radar_fig3.png"), plot = radar_fig3, width = 8, height = 4, dpi = 600, scale = 4)
+
+radar_cobra
+
+```
+
+```{r}
+p1_mab %>%
+  filter(clone_name %in% mabs) %>%
+ ggplot(aes(x=antigen, y=log(dilution,2), group = clone_name, color = clone_name)) + 
+ geom_polygon(fill=NA) + 
+ coord_polar() + theme_bw() + facet_wrap(~ elisa_specificity) +
+ #scale_x_discrete(labels = abbreviate) + 
+ theme(axis.text.x = element_text(size = 3))
+
+p1_mab %>%
+  filter(clone_name %in% mabs) %>%
+ ggplot(aes(x=antigen, y=log(dilution,2), group = clone_name, color = clone_name)) + 
+ geom_polygon(fill=NA) + 
+ coord_polar() + theme_bw() + facet_wrap(~ clone_name) +
+ #scale_x_discrete(labels = abbreviate) + 
+ theme(axis.text.x = element_text(size = 3))
+```
+
+

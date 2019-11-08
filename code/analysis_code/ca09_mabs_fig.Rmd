@@ -1,0 +1,177 @@
+---
+title: "CA/09 Mab Reactivity"
+author: "Amanda Skarlupka"
+date: "11/8/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+I need to load the packages. This'll follow a lot of the P1 mabs reactivity analysis. 
+
+```{r}
+library(ggplot2)
+library(forcats)
+library(broom)
+library(ggbiplot)
+library(dplyr)
+library(here)
+library(ggradar)
+library(tibble)
+library(ggpubr)
+library(scales)
+```
+
+I need to load the data that has the wildtype reactivity
+
+```{r}
+ca09_mab <- readRDS(here("data", "processed_data", "ca09mab_processed_data.rds"))
+ca09_sera <- readRDS(here("data", "processed_data", "ca09sera_processed_data.rds"))
+antigen_key <- readRDS(here("data", "processed_data", "antigen_key.rds"))
+p1_sera <- readRDS(here("data", "processed_data", "p1sera_processed_data.rds"))
+p1_mab <- readRDS(here("data", "processed_data", "p1mab_processed_data.rds"))
+```
+Pan-H1 seasonal and pdm mAbs
+
+* AT163.272.54
+* 3B6
+
+HA Stem control mAbs (more than likely not included due to no HAI reactivity)
+
+* C179
+* CR6261
+* FI6
+* F10
+
+Narrowly-reactive seasonal mAbs
+
+* AT170.558.146
+* AT163.210.182
+* AT163.104.93
+* AT170.119.5
+* AT163.333.93
+* AT163.329.189
+
+Narrowly-reactive 1918 pdm and 1934 mAbs
+
+* 5D3
+* 6B9
+* 39E4
+* IC5-4F8
+* RA5-22
+
+Narrowly-reactive CA/09 pdm mAbs
+
+* 1C5
+* 5C12
+* CA09-02
+* CA09-09
+* CA09-11
+* CA09-15
+* 1E6
+* 2A12
+* 2B11
+* 1G12
+* 3G6
+* 5B-2A12
+* 2G7
+* 2F3
+* 3B8
+* M2-2B9
+
+
+```{r}
+ca09_mab$lineage[is.na(ca09_mab$lineage)] <- "unknown"
+  
+ca09_mab$lineage <- factor(ca09_mab$lineage, levels = c("human_like", "unknown", "classical", "eurasian"))
+ca09_mab$sublineage <- factor(ca09_mab$sublineage, levels = c("alpha", "beta", "gamma", "gamma_2", "npdm", "delta_1", "delta_2"))
+ca09_mab$antigen <- factor(ca09_mab$antigen, levels = c("Swine/31", "Iowa/73", "WI/97", "Indiana/00", "NC/01", "Spain/2003", "Zhejiang/07", "Colorado/09", "Illinois/09", "Minnesota/09", "NC/09", "NC/34543/09", "NC/5043-1/09", "Utah/09", "Missouri/13", "Nebraska/13", "MN/15", "NC/15"), ordered = TRUE)
+f <- ca09_mab %>%
+  filter(clone_name == "1E6") %>%
+  select(c(dilution, antigen, sublineage, lineage, clone_name)) %>%
+  arrange(lineage, sublineage, antigen) %>%
+  pull(antigen)
+
+ca09_mab$antigen <- factor(ca09_mab$antigen, levels = (f), ordered=TRUE)
+
+```
+
+```{r}
+ca09_mab_fig4 <- ca09_mab %>%
+  ggplot(aes(y = dilution, x = antigen)) +
+  geom_col(aes(shape = lineage, fill = clone_name, color = clone_name), position = "dodge") +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
+  scale_shape_manual(values = c(15:18)) +
+  scale_y_continuous(trans = "log2") +
+  theme(axis.text.x = element_text(colour = c("blue", "blue", "blue", "blue", "grey", "red", "red", "red", "red", "red", "red", "red", "red", "red", "red", "red", "black", "black", "blue", "blue"))) +
+  labs(y = "Dilution from 20ug/ml",
+       title = "CA/09 Monoclonals against Swine Virus HAs") +
+  facet_grid(rows= vars(elisa_specificity))
+ggsave(filename = here::here("results", "figures", "ca09_mab_fig4.png"), plot = ca09_mab_fig4)
+```
+
+
+Create a radar plot to try and visualize the differences of the broad, narrow, and cobra specific monoclonals in one plot. 
+
+Change into log...
+```{r}
+
+ca09_mab_full <- readRDS(here("data", "processed_data", "ca09mab_full.rds"))
+ca09_mab_full[, c(2:19)] <- log2(20/ca09_mab_full[,c(2:19)])
+```
+
+
+Narrow reactivity to CA/09 mAbs
+```{r}
+narrow_ca09 <- ca09_mab %>%
+  filter(elisa_specificity == "narrow_ca09") %>%
+  pull(clone_name)
+narrow_ca09 <- unique(narrow_ca09)
+
+ca09_mab_narrow_ca09 <- ca09_mab_full %>%
+  filter(clone_name %in% narrow_ca09)
+
+radar_narrow_ca09 <- ggradar(ca09_mab_narrow_ca09, values.radar = c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10), grid.max = 10, group.point.size = 1, group.line.width = 0.5, legend.title = "Narrow reactivity to CA/09")
+```
+
+Narrow reactivity to seasonal mAbs
+```{r}
+narrow_seasonal <- ca09_mab %>%
+  filter(elisa_specificity == "narrow_seasonal") %>%
+  pull(clone_name)
+narrow_seasonal <- unique(narrow_seasonal)
+
+ca09_mab_narrow_seasonal <- ca09_mab_full %>%
+  filter(clone_name %in% narrow_seasonal)
+
+radar_narrow_seasonal <- ggradar(ca09_mab_narrow_seasonal, values.radar = c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10), grid.max = 10, group.point.size = 1, group.line.width = 0.5, legend.title = "Narrow reactivity to seasonal H1s")
+
+```
+
+Narrow reacitivity to 1918 pandemic strains
+```{r}
+narrow_1918pdm <- ca09_mab %>%
+  filter(elisa_specificity == "narrow_1918pdm") %>%
+  pull(clone_name)
+narrow_1918pdm <- unique(narrow_1918pdm)
+
+ca09_mab_narrow_1918pdm <- ca09_mab_full %>%
+  filter(clone_name %in% narrow_1918pdm)
+
+radar_narrow_1918pdm <- ggradar(ca09_mab_narrow_1918pdm, values.radar = c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10), grid.max = 10, group.point.size = 1, group.line.width = 0.5, legend.title = c("Narrow reactivity to seasonal H1s"))
+
+```
+
+Plot all of them on the same figure
+```{r}
+
+radar_fig5 <- ggarrange(radar_narrow_ca09, radar_narrow_seasonal, radar_narrow_1918pdm, ncol=3, nrow = 1)
+
+ggsave(filename = here::here("results", "figures", "radar_fig5.png"), plot = radar_fig5, width = 8, height = 4, dpi = 600, scale = 4)
+
+```
+
+# Need to figure out how to add legend titles.
+
