@@ -106,6 +106,9 @@ knitr::include_graphics(here::here("results", "figures", "radar_fig3.png"))
 ```{r}
 knitr::include_graphics(here::here("results", "figures", "radar_fig5.png"))
 ```
+I need to reorder the groups of the radar graphs so that they  are grouped by antigenicity, this will be just moving the columns around. 
+
+
 ## Univariate analysis
 
 
