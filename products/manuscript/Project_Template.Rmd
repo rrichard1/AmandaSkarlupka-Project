@@ -96,7 +96,7 @@ knitr::include_graphics(here::here("results", "figures", "p1_mab_fig2.png"))
 ```{r}
 knitr::include_graphics(here::here("results", "figures", "ca09_mab_fig4.png"))
 ```
-
+It looks as though there are some antigens that did not respond against any antibody. These HAs include Missouri/13, NorthCarolina/2015, and Illinois/2009. These will be removed from the radar plots because we want to look a little more indepth at the interactions between the positive results. 
 ```{r}
 knitr::include_graphics(here::here("results", "figures", "radar_fig3.png"))
 ```
@@ -106,7 +106,7 @@ knitr::include_graphics(here::here("results", "figures", "radar_fig3.png"))
 ```{r}
 knitr::include_graphics(here::here("results", "figures", "radar_fig5.png"))
 ```
-I need to reorder the groups of the radar graphs so that they  are grouped by antigenicity, this will be just moving the columns around. 
+I need to reorder the groups of the radar graphs so that they  are grouped by antigenicity, this will be just moving the columns around. Need to figure out how to put on legend titles or graph titles. Also need to adjust the 
 
 
 ## Univariate analysis

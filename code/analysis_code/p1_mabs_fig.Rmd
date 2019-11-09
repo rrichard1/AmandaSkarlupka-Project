@@ -166,6 +166,9 @@ mabs <- c(broad_p1, narrow_p1, cobra_p1)
 p1_mab_full <- readRDS(here("data", "processed_data", "p1mab_full.rds"))
 p1_mab_full[, c(2:19)] <- log2(20/p1_mab_full[,c(2:19)])
 
+p1_mab_full <- p1_mab_full %>%
+  select(-c("Missouri/13", "NC/15", "Illinois/09"))
+
 p1_mab_broad <- p1_mab_full %>%
   filter(clone_name %in% broad_p1)
 

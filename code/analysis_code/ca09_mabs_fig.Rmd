@@ -17,21 +17,22 @@ library(forcats)
 library(broom)
 library(ggbiplot)
 library(dplyr)
-library(here)
+
 library(ggradar)
 library(tibble)
 library(ggpubr)
 library(scales)
+library(here)
 ```
 
 I need to load the data that has the wildtype reactivity
 
 ```{r}
-ca09_mab <- readRDS(here("data", "processed_data", "ca09mab_processed_data.rds"))
-ca09_sera <- readRDS(here("data", "processed_data", "ca09sera_processed_data.rds"))
-antigen_key <- readRDS(here("data", "processed_data", "antigen_key.rds"))
-p1_sera <- readRDS(here("data", "processed_data", "p1sera_processed_data.rds"))
-p1_mab <- readRDS(here("data", "processed_data", "p1mab_processed_data.rds"))
+ca09_mab <- readRDS(here::here("data", "processed_data", "ca09mab_processed_data.rds"))
+ca09_sera <- readRDS(here::here("data", "processed_data", "ca09sera_processed_data.rds"))
+antigen_key <- readRDS(here::here("data", "processed_data", "antigen_key.rds"))
+p1_sera <- readRDS(here::here("data", "processed_data", "p1sera_processed_data.rds"))
+p1_mab <- readRDS(here::here("data", "processed_data", "p1mab_processed_data.rds"))
 ```
 Pan-H1 seasonal and pdm mAbs
 
@@ -115,11 +116,19 @@ ggsave(filename = here::here("results", "figures", "ca09_mab_fig4.png"), plot = 
 
 Create a radar plot to try and visualize the differences of the broad, narrow, and cobra specific monoclonals in one plot. 
 
-Change into log...
+Change into log and reorder the columns so that they are sorted by the lineages of the swine HAs.
 ```{r}
 
 ca09_mab_full <- readRDS(here("data", "processed_data", "ca09mab_full.rds"))
 ca09_mab_full[, c(2:19)] <- log2(20/ca09_mab_full[,c(2:19)])
+
+swine_lineage <- c("clone_name", "Swine/31", "Iowa/73", "WI/97", "Indiana/00", "NC/01", "Spain/2003", "Zhejiang/07", "Colorado/09", "Illinois/09", "Minnesota/09", "NC/09", "NC/34543/09", "NC/5043-1/09", "Utah/09", "Missouri/13", "Nebraska/13", "MN/15", "NC/15")
+
+ca09_mab_full <- ca09_mab_full[, swine_lineage]
+
+ca09_mab_full <- ca09_mab_full %>%
+  select(-c("Missouri/13", "NC/15", "Illinois/09"))
+  
 ```
 
 
