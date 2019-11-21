@@ -83,14 +83,16 @@ sera_fig1
  
 I just can't compare the polyclonal sera and the monoclonals on the same graph. 
 ```{r}
-ca09 %>%
-  ggplot() +
-  geom_point(data = avg_sera, aes(x = "CA/09 Sera", y = log2)) +
-  geom_point(aes(x = clone_name, y = dilution)) +
-  scale_y_continuous(trans = "log2")+
-  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
-  labs(y = "Dilution from 20ug/ml") + 
-  facet_wrap(vars(antigen))
+#I don't remember what this was for. 
+
+#ca09_sera %>%
+#  ggplot() +
+# geom_point(data = avg_sera, aes(x = "CA/09 Sera", y = log2)) +
+#  geom_point(aes(x = clone_name, y = dilution)) +
+# scale_y_continuous(trans = "log2")+
+#  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
+#  labs(y = "Dilution from 20ug/ml") + 
+#  facet_wrap(vars(antigen))
 ```
  
  

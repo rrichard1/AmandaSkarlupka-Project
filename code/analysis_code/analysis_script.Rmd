@@ -160,7 +160,7 @@ Graph of just wild-type H1 raised monoclonal responses.
 
 ```{r}
 ca09_mab$key_name <- as.factor(ca09_mab$key_name)
-ca09_mab$key_name <- mutate(ca09_mab$key_name, funs=toupper)
+#ca09_mab$key_name <- mutate(ca09_mab$key_name, funs=toupper)
 
 
 
