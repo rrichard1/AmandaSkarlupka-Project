@@ -12,14 +12,14 @@ output:
 bibliography: ../references.bib
 csl: ../apa.csl
 ---
-```{r echo = FALSE}
+```{r, echo = FALSE}
 library(here)
 
 ```
 
 
 # Summary/Abstract
-_Write a summary of your project._
+Although a vaccine for influenza exists, the efficacy and efficiency of the vaccine is very low and needs to be administered annually. Neutralizing antibodies are elicited from vaccination and are recalled during an infection. The Ross Lab at the CVI has developed a P1 hemagglutinin (HA) Computationally Optimized Broadly Reactive Antigens (COBRA)  created with swine and human isolated H1 influenza HA sequences. Monoclonal antibodies specific for P1 HA were individually more broadly reactive against human isolated influenza than wild-type HA specific monoclonals. These monoclonals were tested for neutralizing activity against the swine isolated viruses. The P1 monoclonals and A/California/07/2009 monoclonals both reacted against swine viruses. 
 
 # Introduction
 
@@ -44,7 +44,6 @@ The monoclonal antibodies used for the assays are described in Table 1.
 ```{r resulttable1,  fig.cap='Table1.', echo=FALSE}
 knitr::include_graphics("../../results/tables/antibody_table.png")
 ```
-
 
 #### Viruses and HA antigens
 H1 viruses were obtained through the Influenza Reagents Resource (IRR), BEI Resources, the Centers for Disease Control (CDC), Sanofi-Pasteur, or the Tompkins Laboratory.  Viruses were passaged once in the same growth conditions as they were received or as per the instructions provided by the WHO or the University of Minnesota, in either embryonated chicken eggs or Madin-Darby canine kidney (MDCK) cell culture [1].  Virus lots were aliquoted for single-use applications and stored at -80°C. Hemagglutination titer of the frozen aliquots was determined with turkey RBCs. 
@@ -111,6 +110,11 @@ I need to reorder the groups of the radar graphs so that they  are grouped by an
 
 ## Univariate analysis
 
+```{r}
+knitr::include_graphics(here::here("results", "figures", "univariate_antigen.png"))
+
+knitr::include_graphics(here::here("results", "figures", "univariate_clone.png"))
+```
 
 _Use a combination of text/tables/figures to explore and describe your data. You should produce plots or tables or other summary quantities for most of your variables. You definitely need to do it for the important variables, i.e. if you have main exposure or outcome variables, those need to be explored. Depending on the total number of variables in your dataset, explore all or some of the others._
 
@@ -120,8 +124,12 @@ _Create plots or tables and compute simple statistics (e.g. t-tests, simple regr
 
 ## Full analysis
 
+
 Principal component analysis
 _Use one or several suitable statistical/machine learning methods to analyze your data and to produce meaningful figures, tables, etc. This might again be code that is best placed in one or several separate R scripts that need to be well documented. You can then load the results produced by this code_
+```{r}
+knitr::include_graphics(here::here("results", "figures", "all_monoclonal_pca.png"))
+```
 
 # Discussion
 

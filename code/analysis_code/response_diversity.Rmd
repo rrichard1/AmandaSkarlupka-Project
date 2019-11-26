@@ -1,0 +1,76 @@
+---
+title: "Reactivity Analysis"
+author: "Amanda Skarlupka"
+date: "11/21/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Load the needed packages.
+```{r}
+library(ggplot2)
+library(forcats)
+library(broom)
+library(ggbiplot)
+library(dplyr)
+library(here)
+```
+
+
+Load the processed data
+```{r}
+ca09_mab <- readRDS(here("data", "processed_data", "ca09mab_processed_data.rds"))
+ca09_sera <- readRDS(here("data", "processed_data", "ca09sera_processed_data.rds"))
+p1_mab <- readRDS(here("data", "processed_data", "p1mab_processed_data.rds"))
+p1_sera <- readRDS(here("data", "processed_data", "p1sera_processed_data.rds"))
+```
+
+The questions that are being pursued here are:
+1. What are the total number of viruses that each monoclonal inhibits the HA of?
+
+A concentration of greater than 20, so just being recognized by the monoclonal antibody is what I'm considering to be inhibitory. The physiological relevant concentration is not known by me however.
+
+```{r}
+mabs <- bind_rows(ca09_mab, p1_mab)
+
+univariate_clone <- mabs %>%
+  filter(concentration < 20) %>%
+  ggplot(aes(x = forcats::fct_infreq(clone_name))) +
+  geom_bar(aes(fill = raised_against))+
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+ggsave(filename = here::here("results", "figures", "univariate_clone.png"), plot = univariate_clone)
+
+```
+The CA09-09 monoclonal antibody recognized the most antigens and also recognized the most narrow selection of antigens as well. (2A12, 2B11, and CA09-11). 
+
+
+2. How many monoclonals inhibit each virus?
+
+```{r}
+univariate_antigen <- mabs %>%
+  filter(concentration < 20) %>%
+  ggplot(aes(x = forcats::fct_infreq(antigen))) +
+  geom_bar(aes(fill = raised_against)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, colour = c("red", "red", "black", "red", "red", "blue", "black", "red", "red", "red", "blue", "red", "red", "grey")))
+
+ggsave(filename = here::here("results", "figures", "univariate_antigen.png"), plot = univariate_antigen)
+
+```
+The P1 monoclonal antibodies recognized 13 out of 14 viruses, and the CA/09 antibodies recognized 13 out of 14 as well. There was one virus specific to P1 recognition (A/Swine/North Carolina/2009), and one virus specific to just CA/09 recognition (A/Swine/Utah/2009). The A/Swine/North Carolina/5043-1/2009 virus keeps falling within the same groups as the classical lineage viruses to the point where it is worrisome. I double checked the sequence in the lab used to make the virus-like particle and the classficiation of the virus with the literature and it confirmed that it is supposed to be in the human seasonal-like lineage. 
+
+
+3. Do P1 monoclonals inhibit on average more swine viruses compared to CA/09
+
+```{r}
+
+```
+
+
+
+4. Are the ones inhibited by P1 the same as the ones for CA/09 or do they differ?
+5. Do the viruses differ by swine lineage
+6. How does antibody concentration vary?

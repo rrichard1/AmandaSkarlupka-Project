@@ -162,7 +162,9 @@ mab <- antibody_key %>%
   select(c(clone_name, raised_against, elisa_specificity)) %>%
   right_join(mab, by = "clone_name")
 plot(mab_pca, type = "l")
-ggbiplot(mab_pca, obs.scale = 1, var.scale = 1, groups = mab$raised_against, var.axes = FALSE, alpha = 0.5)
+b <- ggbiplot(mab_pca, obs.scale = 1, var.scale = 1, groups = mab$raised_against, var.axes = FALSE, alpha = 0.5)
+
+ggsave(filename = here::here("results", "figures", "all_monoclonal_pca.png"), plot = b)
 ```
 
 
