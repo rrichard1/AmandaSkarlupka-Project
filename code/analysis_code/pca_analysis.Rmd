@@ -4,7 +4,9 @@ author: "Amanda Skarlupka"
 date: "10/30/2019"
 output: html_document
 ---
+Figure 16 and Supplementary figure 6, 7, and 8 are located in this document. 
 
+This document contains the code for the principal component analysis and the variable correlation plots.
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -111,10 +113,12 @@ sera[1:14, 3:9] <- log2(sera[1:14, 3:9])
 
 sera_pca<- prcomp(sera[,3:9], center = TRUE, scale = TRUE)
 plot(sera_pca, type = "l")
-ggbiplot(sera_pca, obs.scale = 1, var.scale = 1, groups = sera$vaccine, labels = sera$mouse) +
+sera_pca_fig <- ggbiplot(sera_pca, obs.scale = 1, var.scale = 1, groups = sera$vaccine, labels = sera$mouse) +
   labs(title = "PCA of CA/09 and P1 Sera to swH1N1/N2 viruses") +
   xlim(c(3.5, -3.5)) + 
   ylim(c(-3.5, 3.5))
+
+ggsave(here("results", "figures", "supp_sera_pca.png"), plot = sera_pca_fig)
 ```
 
 The plot above is also known as variable correlation plots. It shows the relationships between all variables. It can be interpreted as follow:
@@ -132,7 +136,9 @@ ca09_mab[1:18, 2:14] <- log2(ca09_mab[1:18, 2:14])
 
 ca09_mab_pca <- prcomp(ca09_mab[, 2:14], center = TRUE, scale = TRUE)
 plot(ca09_mab_pca, type = "l")
-ggbiplot(ca09_mab_pca, obs.scale = 1, var.scale = 1, groups = ca09_mab$clone_name)
+supp_ca09_pca <- ggbiplot(ca09_mab_pca, obs.scale = 1, var.scale = 1, groups = ca09_mab$clone_name)
+
+ggsave(here("results", "figures", "supp_ca09_pca.png"), plot = supp_ca09_pca)
 ```
 
 
@@ -144,7 +150,9 @@ p1_mab[1:12, 2:14] <- log2(p1_mab[1:12, 2:14])
 
 p1_mab_pca <- prcomp(p1_mab[, 2:14], center = TRUE, scale = TRUE)
 plot(p1_mab_pca, type = "l")
-ggbiplot(p1_mab_pca, obs.scale = 1, var.scale = 1, groups = p1_mab$clone_name)
+supp_p1_pca <- ggbiplot(p1_mab_pca, obs.scale = 1, var.scale = 1, groups = p1_mab$clone_name)
+
+ggsave(here("results", "figures", "supp_p1_pca.png"), plot = supp_p1_pca)
 ```
 
 
@@ -168,17 +176,6 @@ ggsave(filename = here::here("results", "figures", "all_monoclonal_pca.png"), pl
 ```
 
 
-```{r}
-ca09_sera_mean <- data.frame(lapply(sera[1:6, 3:9], mean))
 
-p1_sera_mean <- data.frame(lapply(sera[7:14, 3:9], mean))
-
-t <- union(ca09_sera_mean, p1_sera_mean)
-
-t %>%
-  as_tibble() %>%
-  mutate(group = c("ca09_sera", "p1_sera"))
-
-```
 
 

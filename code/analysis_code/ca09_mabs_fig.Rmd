@@ -5,6 +5,9 @@ date: "11/8/2019"
 output: html_document
 ---
 
+Figures 2 and 6 are contained in this document. 
+
+This CA/09 specific document contains the radar/spider graphs of the HAI response. It also contains the HAI responses based on elisa specificity of the monoclonals. 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -111,6 +114,8 @@ ca09_mab_fig4 <- ca09_mab %>%
        title = "CA/09 Monoclonals against Swine Virus HAs") +
   facet_grid(rows= vars(elisa_specificity))
 ggsave(filename = here::here("results", "figures", "ca09_mab_fig4.png"), plot = ca09_mab_fig4)
+
+ca09_mab_fig4
 ```
 
 
@@ -159,7 +164,7 @@ radar_narrow_seasonal <- ggradar(ca09_mab_narrow_seasonal, values.radar = c(0, 1
 
 ```
 
-Narrow reacitivity to 1918 pandemic strains
+Narrow reactivity to 1918 pandemic strains
 ```{r}
 narrow_1918pdm <- ca09_mab %>%
   filter(elisa_specificity == "narrow_1918pdm") %>%
@@ -182,5 +187,5 @@ ggsave(filename = here::here("results", "figures", "radar_fig5.png"), plot = rad
 
 ```
 
-# Need to figure out how to add legend titles.
+
 

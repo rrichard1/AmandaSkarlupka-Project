@@ -4,7 +4,7 @@ author: "Amanda Skarlupka"
 date: "11/21/2019"
 output: html_document
 ---
-
+This document contains the code for Figure 8, supplementary figure 5 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -40,9 +40,14 @@ univariate_clone <- mabs %>%
   filter(concentration < 20) %>%
   ggplot(aes(x = forcats::fct_infreq(clone_name))) +
   geom_bar(aes(fill = raised_against))+
-  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(title = "Total number of viruses recognized above the limit of detection",
+       x = "Monoclonal Antibody",
+       y = "Number of Viruses")
 
 ggsave(filename = here::here("results", "figures", "univariate_clone.png"), plot = univariate_clone)
+
+univariate_clone
 
 ```
 The CA09-09 monoclonal antibody recognized the most antigens and also recognized the most narrow selection of antigens as well. (2A12, 2B11, and CA09-11). 
@@ -55,22 +60,12 @@ univariate_antigen <- mabs %>%
   filter(concentration < 20) %>%
   ggplot(aes(x = forcats::fct_infreq(antigen))) +
   geom_bar(aes(fill = raised_against)) +
-  theme(axis.text.x = element_text(angle = 90, hjust = 1, colour = c("red", "red", "black", "red", "red", "blue", "black", "red", "red", "red", "blue", "red", "red", "grey")))
+  theme(axis.text.x = element_text(angle = 90, hjust = 1, colour = c("red", "red", "black", "red", "red", "blue", "black", "red", "red", "red", "blue", "red", "red", "grey"))) +
+  labs(title = "Total number of monoclonals recognizing an antigen",
+       x = "Swine Virus",
+       y = "Number of Mabs")
 
-ggsave(filename = here::here("results", "figures", "univariate_antigen.png"), plot = univariate_antigen)
+ggsave(filename = here::here("results", "figures", "supp_univariate_antigen.png"), plot = univariate_antigen)
 
 ```
 The P1 monoclonal antibodies recognized 13 out of 14 viruses, and the CA/09 antibodies recognized 13 out of 14 as well. There was one virus specific to P1 recognition (A/Swine/North Carolina/2009), and one virus specific to just CA/09 recognition (A/Swine/Utah/2009). The A/Swine/North Carolina/5043-1/2009 virus keeps falling within the same groups as the classical lineage viruses to the point where it is worrisome. I double checked the sequence in the lab used to make the virus-like particle and the classficiation of the virus with the literature and it confirmed that it is supposed to be in the human seasonal-like lineage. 
-
-
-3. Do P1 monoclonals inhibit on average more swine viruses compared to CA/09
-
-```{r}
-
-```
-
-
-
-4. Are the ones inhibited by P1 the same as the ones for CA/09 or do they differ?
-5. Do the viruses differ by swine lineage
-6. How does antibody concentration vary?

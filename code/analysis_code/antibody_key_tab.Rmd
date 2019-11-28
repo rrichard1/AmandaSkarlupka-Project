@@ -4,7 +4,7 @@ author: "Amanda Skarlupka"
 date: "10/31/2019"
 output: html_document
 ---
-
+This document contains the code for Table 1. 
 The goal is to create a presentable table to describe the antibodies used in this paper. 
 
 ```{r setup, include=FALSE}

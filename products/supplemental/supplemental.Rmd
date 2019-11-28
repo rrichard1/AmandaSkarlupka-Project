@@ -1,0 +1,64 @@
+---
+title: "Supplemental Data"
+author: "Amanda Skarlupka"
+date: "11/27/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+This Rmarkdown contains the supplemental data and figures for Amanda Skarlupka's Data Science Project.
+
+Supplemental figures 1 and 2. Overall the CA/09 and SC/18 isolated monoclonal anitbodies elicit a broad reactivity against the swine viruses. None of the Brisbane/07 or PueroRico/1934 antibodies had any reactivity. 
+
+```{r resultfigure1,  fig.cap='Supplemental Figure 1. The HA inhibition of swine viruses from co-incubation with wild-type raised murine monoclonal antibodies. The facets are grouped by swine virus.', echo= FALSE}
+knitr::include_graphics(here::here("results", "figures", "supp_WTmab_by_antigen.png"))
+```
+
+
+```{r resultfigure2,  fig.cap='Supplemental Figure 2. The HA inhibition of swine viruses from co-incubation with wild-type raised murine monoclonal antibodies. The facets are grouped by antibody.', echo= FALSE}
+knitr::include_graphics(here::here("results", "figures", "supp_WTmab_by_mab.png"))
+```
+
+Supplemental Figures 3 and 4. The CA/09 and P1 monoclonal antibody response grouped by antigen, respectively. The breadth of reactivity of the swine viruses are not of the main focus but it is still intersting to note that some viruses are more cross-reactive than others with the different monoclonals. 
+
+```{r resultfigure3,  fig.cap='Supplemental Figure 3. The HA inhibition of swine viruses from co-incubation with CA/09 raised murine monoclonal antibodies. The facets are grouped by virus', echo= FALSE}
+knitr::include_graphics(here::here("results", "figures", "supp_ca09_mab_by_antigen.png"))
+```
+
+```{r resultfigure4,  fig.cap='Supplemental Figure 4. The HA inhibition of swine viruses from co-incubation with P1 raised murine monoclonal antibodies. The facets are grouped by virus', echo= FALSE}
+knitr::include_graphics(here::here("results", "figures", "supp_p1mab_by_antigen.png"))
+```
+
+```{r resultfigure5,  fig.cap='Supplemental Figure 5. The quantification of monoclonals inhibit each virus', echo= FALSE}
+knitr::include_graphics(here::here("results", "figures", "supp_univariate_antigen.png"))
+```
+
+
+```{r resultfigure6,  fig.cap='Supplemental Figure 6. The quantification of monoclonals inhibit each virus', echo= FALSE}
+knitr::include_graphics(here::here("results", "figures", "supp_sera_pca.png"))
+```
+
+The plot above is also known as variable correlation plots. It shows the relationships between all variables. It can be interpreted as follow:
+
+Positively correlated variables are grouped together.
+Negatively correlated variables are positioned on opposite sides of the plot origin (opposed quadrants).
+The distance between variables and the origin measures the quality of the variables on the factor map. Variables that are away from the origin are well represented on the factor map.
+
+```{r resultfigure7,  fig.cap='Supplemental Figure 7. The quantification of monoclonals inhibit each virus', echo= FALSE}
+knitr::include_graphics(here::here("results", "figures", "supp_ca09_pca.png"))
+```
+
+```{r resultfigure8,  fig.cap='Supplemental Figure 8. The quantification of monoclonals inhibit each virus', echo= FALSE}
+knitr::include_graphics(here::here("results", "figures", "supp_p1_pca.png"))
+```
+
+```{r resulttable1,  fig.cap='Supplemental Table 1. The quantification of monoclonals inhibit each virus', echo= FALSE}
+readRDS(here::here("results", "tables", "full_logistic_model.rds"))
+```
+```{r resultfigure9,  fig.cap='Supplemental Figure 9. The quantification of monoclonals inhibit each virus', echo= FALSE}
+knitr::include_graphics(here::here("results", "figures", "supp_different_predictors.png"))
+```
+

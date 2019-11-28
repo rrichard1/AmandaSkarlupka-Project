@@ -12,10 +12,6 @@ output:
 bibliography: ../references.bib
 csl: ../apa.csl
 ---
-```{r, echo = FALSE}
-library(here)
-
-```
 
 
 # Summary/Abstract
@@ -23,7 +19,7 @@ Although a vaccine for influenza exists, the efficacy and efficiency of the vacc
 
 # Introduction
 
-The majority of the surface of the influenza virion is composed of two glycoproteins: the hemaglutinin (HA) and the neuraminidase (NA). Upon vaccination the host responsed by producing neurtralizing antibodies targeting these surface proteins. Due to the high variablity and mutability of the HA, the influenza virus is able to undergo antigenic drift and evade vaccine induced protection. In the Ross lab, a cross-reactive HA protein vaccine has been developed. This computational HA (P1 COBRA HA) contains a broader set of antibody epitopes than wild-type HAs. To further investigate the difference between the epitopes displayed on the P1 and the wild-type A/California/07/2009 (CA/09) HA, monoclonal antibodies raised against each antigen were purified and are currently undergoing characterization. It was found that the P1-specific antibodies bound to a wider range of human isolated influenza viruses, whereas the CA/09 antibodies were more narrow. However, influenza is also isolated from swine hosts, and swine influenza sequences were used in the design of the P1 COBRA HA immunogen. Therefore, the P1-specific antibodies may bind to more wild-type swine influenza HAs than CA/09 antibodies. The impact of a cross-species influenza vaccine is useful for animal-workers as well as prevention of a future pandemic. 
+The majority of the surface of the influenza virion is composed of two glycoproteins: the hemaglutinin (HA) and the neuraminidase (NA). Upon vaccination the host responsed by producing neurtralizing antibodies targeting these surface proteins. Due to the high variablity and mutability of the HA, the influenza virus is able to undergo antigenic drift and evade vaccine induced protection. In the Ross lab, a cross-reactive HA protein vaccine has been developed. This computational HA (P1 COBRA HA) contains a broader set of antibody epitopes than wild-type HAs. To further investigate the renterence between the epitopes displayed on the P1 and the wild-type A/California/07/2009 (CA/09) HA, monoclonal antibodies raised against each antigen were purified and are currently undergoing characterization. It was found that the P1-specific antibodies bound to a wider range of human isolated influenza viruses, whereas the CA/09 antibodies were more narrow. However, influenza is also isolated from swine hosts, and swine influenza sequences were used in the design of the P1 COBRA HA immunogen. Therefore, the P1-specific antibodies may bind to more wild-type swine influenza HAs than CA/09 antibodies. The impact of a cross-species influenza vaccine is useful for animal-workers as well as prevention of a future pandemic. 
 
 The data contains 1.) the minimum hemagglutination inhibtion concentration of each purified monoclonal antibody from CA/09 or P1 COBRA, 2.) the hemagglutination inhibtion titer of the polyclonal sera from the mice that the monoclonal antibodies were purifed from, 3.) the HAs being tested are different swine influenza H1 viruses. There are 19 different swine viruses. There are 12 P1 Mabs, 18 CA/09 Mabs, 6 polyclonal sera from CA/09 mice, and 10 polyclonal sera from P1 mice. 
 
@@ -31,10 +27,8 @@ I have generated the minimum inhibitory concentration data and the HAI titer dat
 
 
 ## Questions/Hypotheses to be addressed
-_State the research questions you plan to answer with this analysis_
-Monoclonal antibodies raised against P1 COBRA HA immunogen show a wider-breadth hemagglutinin inhibtion among different influenza viruses than monoclonal antibodies raised against CA/09 HA. Furthermore, the minimum hemagglutin inhibition concentration of the antibodies is less than those elicited by CA/09. 
 
-We have data about the differences where the antibodies bind. This data may be added in order to see if antibodies that fall into the category of 1. Bind to P1, 2.)Do not bind to human influenza, and 3.) bind to Swine influenza. I want to analyze the data by looking at the total number of viruses that the monoclonals inhibit the HA of. Then look at whether those viruses are the same ones being inhibited every across different monoclonals. Then I want to compare across P1 and CA/09 to see if P1 inhibits more than CA09. Then to see if the ones being inhibited by P1 are the same ones by CA09 and if there is any overlap. Then I want to look at if the viruses being inihibted are specific to a lineage. Finally, the monoclonal antibody inhibition in a concentration so I can look at overall if less antibody is needed for a specific virus that is inhibited by both.  
+Monoclonal antibodies raised against P1 COBRA HA immunogen show a wider-breadth hemagglutinin inhibtion among different influenza viruses than monoclonal antibodies raised against CA/09 HA. Furthermore, the minimum hemagglutin inhibition concentration of the antibodies is less than those elicited by CA/09. We would like to investigate if there are any discernable differences between the inhibtion of P1 antibodies and CA/09 antibodies. Do the P1 monoclonals have a wider breadth of binding to swine influenza? Are the responses different enough that we can use that data to predict based on the observed outcome if the antibody used was a P1 or a CA/09 antibody? We believe that the P1 monoclonals will have a binding to the swine viruses at least equivalent to the CA/09 monoclonals. 
 
 
 # Material and Methods
@@ -42,33 +36,30 @@ We have data about the differences where the antibodies bind. This data may be a
 The monoclonal antibodies used for the assays are described in Table 1. 
 
 ```{r resulttable1,  fig.cap='Table1.', echo=FALSE}
-knitr::include_graphics("../../results/tables/antibody_table.png")
+knitr::include_graphics(here::here("results", "tables", "antibody_table.png"))
 ```
 
 #### Viruses and HA antigens
-H1 viruses were obtained through the Influenza Reagents Resource (IRR), BEI Resources, the Centers for Disease Control (CDC), Sanofi-Pasteur, or the Tompkins Laboratory.  Viruses were passaged once in the same growth conditions as they were received or as per the instructions provided by the WHO or the University of Minnesota, in either embryonated chicken eggs or Madin-Darby canine kidney (MDCK) cell culture [1].  Virus lots were aliquoted for single-use applications and stored at -80°C. Hemagglutination titer of the frozen aliquots was determined with turkey RBCs. 
+H1 viruses were obtained through the Influenza Reagents Resource (IRR), BEI Resources, the Centers for Disease Control (CDC), Sanofi-Pasteur, or the Tompkins Laboratory.  Viruses were passaged once in the same growth conditions as they were received or as per the instructions provided by the WHO or the University of Minnesota, in either embryonated chicken eggs or Madin-Darby canine kidney (MDCK) cell culture.  Virus lots were aliquoted for single-use applications and stored at -80°C. Hemagglutination titer of the frozen aliquots was determined with turkey RBCs. 
 
-The classification of the swine HA was determined using the Swine H1 Clade Classification Tool (http://www.fludb.org) [2] and infers both the global [2] and US [3, 4] swine H1 clade classification from the HA nucleotide sequence.  When available, virus was used for HAI assays, otherwise virus-like particles (VLP) were used. The protein accession numbers for the HA amino acid sequences used for virus-like particle production are provided. The CDS of the wild-type HAs were codon optimized for expression in human cells.   
+The classification of the swine HA was determined using the Swine H1 Clade Classification Tool (http://www.fludb.org) and infers both the global [@anderson_phylogeny-based_2016] and US [@anderson_population_2013; @anderson_characterization_2015] swine H1 clade classification from the HA nucleotide sequence.  When available, virus was used for HAI assays, otherwise virus-like particles (VLP) were used. The protein accession numbers for the HA amino acid sequences used for virus-like particle production are provided. The CDS of the wild-type HAs were codon optimized for expression in human cells.   
 
 Swine wild-type HAs were chosen to be representative of the different lineages and clades described in Table 2. 
 
 ```{r resulttable2,  fig.cap='resulttable2.', echo=FALSE}
-knitr::include_graphics("../../results/tables/antigen_table.png")
+knitr::include_graphics(here::here("results", "tables", "antigen_table.png"))
 ```
 
 
 #### Virus-like Particle (VLP) preparation
 
-Human embryonic kidney 293T (HEK-293T) cells (1 x 10^6 cells total) were transiently transfected with 1 μg DNA of each of the three pTR600 mammalian expression vectors [5; REF] one of each expressing the influenza neuraminidase (A/Mallard/Alberta/24/2001; H7N3), the HIV p55 Gag sequence, and one of the various H1 wild-type hemagglutinins.  Following 72 h of incubation at 37°C in serum free medium, transiently transfected cell supernatent was collected, centrifuged to remove cellular debris, and filtered through a 0.22 μm pore membrane.  Virus-like particles (VLPs) were purified and sedimented by ultracentrifugation on a 20% glycerol cushion at 135,000 x g for 4 h at 4°C.  VLPs were resuspended in phosphate buffered saline (PBS), and total protein concentration was determined with the Micro BCA Protein Assay Reagent kit (Pierce Biotechnology, Rockford, IL, USA).  Hemagglutination activity (HA) of each preparation of VLP was determined by serially diluting volumes of VLPs and adding equal volume 0.8% turkey red blood cells (RBCs) (Lampire Biologicals, Pipersville, PA, USA) suspended in PBS to a V-bottom 96-well plate with a 30 min incubation at room temperature (RT). Prepared RBCs were stored at 4°C and used within 72 h. The highest dilution of VLP with full agglutination of RBCs was considered the endpoint HA titer.  
+Human embryonic kidney 293T (HEK-293T) cells (1 x 10^6 cells total) were transiently transfected with 1 μg DNA of each of the three pTR600 mammalian expression vectors [@skarlupka_computationally_2019] one of each expressing the influenza neuraminidase (A/Mallard/Alberta/24/2001; H7N3), the HIV p55 Gag sequence, and one of the various H1 wild-type hemagglutinins.  Following 72 h of incubation at 37°C in serum free medium, transiently transfected cell supernatent was collected, centrifuged to remove cellular debris, and filtered through a 0.22 μm pore membrane.  Virus-like particles (VLPs) were purified and sedimented by ultracentrifugation on a 20% glycerol cushion at 135,000 x g for 4 h at 4°C.  VLPs were resuspended in phosphate buffered saline (PBS), and total protein concentration was determined with the Micro BCA Protein Assay Reagent kit (Pierce Biotechnology, Rockford, IL, USA).  Hemagglutination activity (HA) of each preparation of VLP was determined by serially diluting volumes of VLPs and adding equal volume 0.8% turkey red blood cells (RBCs) (Lampire Biologicals, Pipersville, PA, USA) suspended in PBS to a V-bottom 96-well plate with a 30 min incubation at room temperature (RT). Prepared RBCs were stored at 4°C and used within 72 h. The highest dilution of VLP with full agglutination of RBCs was considered the endpoint HA titer.  
 
 #### Hemagglutination inhibition (HAI) assay
 
-The hemagglutination inhibition (HAI) assay assessed functional antibodies specific to the HA able to inhibit agglutination of turkey erythrocytes. The protocol is adapted from the WHO laboratory influenza surveillance manual [1; REF]. HAIs were conducted with either polyclonal mouse sera or purified monoclonal antibodies. Polyclonal sera were treated with receptor-destroying enzyme (RDE) (Denka Seiken, Co., Japan) prior to being tested to inactivate nonspecific inhibitors.  Briefly, three parts RDE were added to one part sera and incubated overnight at 37°C. RDE was inactivated by incubation at 56°C for ∼30 min. After heat treatment, six parts PBS were added to the RDE-treated sera. Purified monoclonal antibodies were adjusted to a concentration of 20 μg/ml in PBS. 
+The hemagglutination inhibition (HAI) assay assessed functional antibodies specific to the HA able to inhibit agglutination of turkey erythrocytes. The protocol is adapted from the WHO laboratory influenza surveillance manual. HAIs were conducted with either polyclonal mouse sera or purified monoclonal antibodies. Polyclonal sera were treated with receptor-destroying enzyme (RDE) (Denka Seiken, Co., Japan) prior to being tested to inactivate nonspecific inhibitors.  Briefly, three parts RDE were added to one part sera and incubated overnight at 37°C. RDE was inactivated by incubation at 56°C for ∼30 min. After heat treatment, six parts PBS were added to the RDE-treated sera. Purified monoclonal antibodies were adjusted to a concentration of 20 μg/ml in PBS. 
 
 RDE-treated and monoclonal antibodies were added in 50 μl to a V-bottom microtiter plate and were two-fold serially diluted across in PBS. An equal volume, 25 μl, of each virus (or VLP where applicable), adjusted to approximately 8 hemagglutination units (HAU)/50 μl, was added to all wells except for the last column which received 25 μl of PBS. The plates were covered and incubated at RT for 20 min. Then, 50 μl of 0.8% turkey red blood cells were added to each well. The plates were mixed by agitation and covered, and the RBCs were allowed to settle for 30 min at RT. The polyclonal sera HAI titer was determined by the reciprocal dilution of the last well that contained non-agglutinated RBCs. The monoclonal minimum agglutination concentration was determined by the dilution of the last well that contained non-agglutinated RBCs multiplied by the starting concentration of 20 μg/ml. Negative controls were included for each plate.All mice were negative (HAI < 1:10) for preexisting antibodies to currently circulating human and swine influenza viruses prior to vaccination.
-
-
-#### Cell-based ELISA for Influenza Neutralization
 
 #### Statistical Analysis
 The limit of detection for the polyclonal sera HAI was 1:10, and 1:5 was used for the statistical analysis of samples below that. The limit of detection for the monoclonal antibody HAI was 10 ug/ml. Samples below that limit were defined as 20ug/ml for statistical analysis. The log2 geometric mean was calculated from the HAI titers of the polyclonal sera and monoclonal antibody concentrations. 
@@ -76,60 +67,180 @@ The limit of detection for the polyclonal sera HAI was 1:10, and 1:5 was used fo
 
 # Results
 
+### Data cleaning and Transformations
+
 The data was imported from the raw excel data file along with the antigen and antibody keys. 
 
-Due to a limited supply of polyclonal sera, at least one swine virus from each lineage and clade was included. The monoclonal antibody HAI antigen panel included a wider range of antigens. Therefore, the HAs not included in the sera HAIs were removed from the analysis.
+Due to a limited supply of polyclonal sera, the HA inhibition was only determined for a representative swine virus from each lineage and clade. The monoclonal antibody HAI antigen panel included a wider range of antigens. Therefore, the HAs not included in the sera HAIs were removed from the sera analysis.
 
 Variables were created based on the raw HAI titers for both the polyclonal sera and monoclonal antibodies. The polyclonal sera titer and monoclonal antibody conentration was transformed by log base 2. Furthermore, the monoclonal antibody dilution factor was determined by dividing 20ug/ml by the endpoint agglutination concentration. 
 
-Similar to the previous study between the COBRA antigens and HAI titers to swine viruses (Skarlupka, 2019 REF), the P1 and CA/09 sera had differential reactions to the groups of different swine viruses (Figure 1). 
+## Univariate analysis
+### Polyclonal sera analysis
 
-```{r resultfigure1,  fig.cap='Figure 1. The hemagglutination inhibition of swine viruses of polyclonal sera of mice sub-lethally challenged with either A/California/07/2009 (CA/09) or P1 COBRA viruses. The swine virus panel included representatives from the classical (red), Eurasian (black), and human-like (blue) clades.', echo=FALSE}
-knitr::include_graphics("../../results/figures/sera_fig1.png")
+Similar to the previous study between the COBRA antigens and HAI titers to swine viruses [@skarlupka_computationally_2019], the P1 and CA/09 sera had differential reactions to the groups of different swine viruses (Figure 1). There were some viruses that had no HAI titer to such as NC/01, and MN/15. P1 sera had higher responses with respect to the Eurasian lineage viruses and three out of four classsical lineage viruses that exhibited inhibtion.
+
+```{r resultfigure1,  fig.cap='Figure 1. The HA inhibition of swine viruses of polyclonal sera of mice sub-lethally challenged with either A/California/07/2009 (CA/09) or P1 COBRA viruses. The swine virus panel included representatives from the classical (red), Eurasian (black), and human-like (blue) clades.', echo=FALSE}
+knitr::include_graphics(here::here("results", "figures", "sera_fig1.png"))
 ```
 
-```{r}
-knitr::include_graphics(here::here("results", "figures", "p1_mab_fig2.png"))
-```
+### A/California/07/2009 Monoclonal Analysis
 
-```{r}
+Taking a look at the reponses based on the cross reactivity profiles of the monoclonals. There is no reactivity from the seasonal monoclonals and there is some reactivtity from the 1918 specific clones. The CA/09 specific ones had a higher titers and a wider response across more viruses compared to the other groups. Therefore, the CA/09 monoclonals are to be investigated further. 
+```{r resultfigure2,  fig.cap='Figure 2. Tclassical (red), Eurasian (black), and human-like (blue) clades.', echo=FALSE}
 knitr::include_graphics(here::here("results", "figures", "ca09_mab_fig4.png"))
 ```
+
+
+```{r resultfigure3,  fig.cap='Figure 3. ', echo=FALSE}
+knitr::include_graphics(here::here("results", "figures", "ca09_mab_individual.png"))
+```
+
+### P1 Monoclonal Analysis
+```{r resultfigure4,  fig.cap='Figure 4. classical (red), Eurasian (black), and human-like (blue) clades.', echo=FALSE}
+
+knitr::include_graphics(here::here("results", "figures", "p1_mab_fig2.png"))
+```
+```{r resultfigure5,  fig.cap='Figure 5. classical (red), Eurasian (black), and human-like (blue) clades.', echo=FALSE}
+
+knitr::include_graphics(here::here("results", "figures", "p1mab_by_mab.png"))
+```
+
+
 It looks as though there are some antigens that did not respond against any antibody. These HAs include Missouri/13, NorthCarolina/2015, and Illinois/2009. These will be removed from the radar plots because we want to look a little more indepth at the interactions between the positive results. 
-```{r}
+
+```{r resultfigure6,  fig.cap='Figure 6. classical (red), Eurasian (black), and human-like (blue) clades.', echo=FALSE}
+
+knitr::include_graphics(here::here("results", "figures", "radar_fig5.png"))
+```
+
+
+```{r resultfigure7,  fig.cap='Figure 7. classical (red), Eurasian (black), and human-like (blue) clades.', echo=FALSE}
+
 knitr::include_graphics(here::here("results", "figures", "radar_fig3.png"))
 ```
 
+From looking at each virus separately 
 
+The questions that are being pursued here are:
+1. What are the total number of viruses that each monoclonal inhibits the HA of?
 
-```{r}
-knitr::include_graphics(here::here("results", "figures", "radar_fig5.png"))
-```
-I need to reorder the groups of the radar graphs so that they  are grouped by antigenicity, this will be just moving the columns around. Need to figure out how to put on legend titles or graph titles. Also need to adjust the 
+A concentration of greater than 20, so just being recognized by the monoclonal antibody is what I'm considering to be inhibitory. The physiological relevant concentration is not known by me however.
 
-
-## Univariate analysis
-
-```{r}
-knitr::include_graphics(here::here("results", "figures", "univariate_antigen.png"))
+```{r resultfigure8,  fig.cap='Figure 8. classical (red), Eurasian (black), and human-like (blue) clades.', echo=FALSE}
 
 knitr::include_graphics(here::here("results", "figures", "univariate_clone.png"))
 ```
+The P1 monoclonal antibodies recognized 13 out of 14 viruses, and the CA/09 antibodies recognized 13 out of 14 as well. There was one virus specific to P1 recognition (A/Swine/North Carolina/2009), and one virus specific to just CA/09 recognition (A/Swine/Utah/2009). The A/Swine/North Carolina/5043-1/2009 virus keeps falling within the same groups as the classical lineage viruses to the point where it is worrisome. I double checked the sequence in the lab used to make the virus-like particle and the classficiation of the virus with the literature and it confirmed that it is supposed to be in the human seasonal-like lineage. 
 
-_Use a combination of text/tables/figures to explore and describe your data. You should produce plots or tables or other summary quantities for most of your variables. You definitely need to do it for the important variables, i.e. if you have main exposure or outcome variables, those need to be explored. Depending on the total number of variables in your dataset, explore all or some of the others._
 
-## Bivariate analysis
-_Create plots or tables and compute simple statistics (e.g. t-tests, simple regression model with 1 predictor, etc.) to look for associations between your outcome(s) and each individual predictor variable_
+## Bivariate analysis of P1 monoclonals compared to CA/09 monoclonals
+
+To statistically take a look at my data I had two datasets that I was working with. 
+
+```{r resultfigure9,  fig.cap='Figure 9. classical (red), Eurasian (black), and human-like (blue) clades.', echo=FALSE}
+
+knitr::include_graphics(here::here("results", "figures", "visualizing_variables.png"))
+```
+
+```{r resultfigure10,  fig.cap='Figure 10. classical (red), Eurasian (black), and human-like (blue) clades.', echo=FALSE}
+
+knitr::include_graphics(here::here("results", "figures", "visualizing_titers.png"))
+```
+
+The outcome variable is the origin of the monoclonal. I am interested in seeing if from the characteristics of the viruses if I can tell which monoclonal would react. Therefore the characteristics of the outcome variable is depicted in figure 11. The outcome variable is about equally weighted. 
+
+```{r resultfigure11,  fig.cap='Figure 11. classical (red), Eurasian (black), and human-like (blue) clades.', echo=FALSE}
+
+knitr::include_graphics(here::here("results", "figures", "outcome_histo.png"))
+```
+
+```{r resultfigure12,  fig.cap='Figure 12. classical (red), Eurasian (black), and human-like (blue) clades.', echo=FALSE}
+
+knitr::include_graphics(here::here("results", "figures", "outcome_variable_distribution.png"))
+```
+
+The CA/09, P1, Bris/07, PR/34, and SC/18 titers were tested individually to confirm the assumption that the data is normally distributed in order to run a t-test between the data sets. However, the data failed the Shapiro-wilk test because the data (Tables 3 and 4).  
+
+```{r resulttable3,  fig.cap='Table 3. classical (red), Eurasian (black), and human-like (blue) clades.', echo=FALSE}
+
+readRDS(here::here("results", "tables", "ca09_normality_results.rds"))
+```
+
+```{r resulttable4,  fig.cap='Table 4. classical (red), Eurasian (black), and human-like (blue) clades.', echo=FALSE}
+
+readRDS(here::here("results", "tables", "p1_normality_results.rds"))
+```
+
+My data doesn't pass the normality test. Therefore, it's suggested to do a non-parametric Wilcoxon rank test instead of a t-test to determine if the groups are statistically significant. According the the Wilcoxon rank sum test, they are not. 
+
+```{r resulttable5,  fig.cap='Table 5. classical (red), Eurasian (black), and human-like (blue) clades.', echo=FALSE}
+
+readRDS(here::here("results", "tables", "rank_results.rds"))
+```
+
+The variances of the data were then confirmed to be similar. 
+
+```{r resulttable6,  fig.cap='Table 6. classical (red), Eurasian (black), and human-like (blue) clades.', echo=FALSE}
+
+readRDS(here::here("results", "tables", "f_test.rds"))
+```
+
+```{r resultfigure13,  fig.cap='Figure 13. classical (red), Eurasian (black), and human-like (blue) clades.', echo=FALSE}
+
+knitr::include_graphics(here::here("results", "figures", "correlations.png"))
+```
+### Single Predictor Model
+
+The null model returns an ACC of 0.6 for the prediction of CA/09.
+
+The single predictor model does not fair better than the null model (Table 7). So it looks like only one of the single predictor models have a higher accuracy than the null. That one is the NC/09 HA with a value of 0.833. 
+
+```{r resulttable7,  fig.cap='Table 7. classical (red), Eurasian (black), and human-like (blue) clades.', echo=FALSE}
+
+readRDS(here::here("results", "tables", "single_predictor.rds"))
+```
+When a full logistic model was ran with all of the predictors the accuracy was still equivalent to 0.6 (supplementary table 1). The subset modelling (with 100 iterations) returned some models with higher accuracy (Table 8). 
+
+```{r resulttable8,  fig.cap='Table 8. classical (red), Eurasian (black), and human-like (blue) clades.', echo=FALSE}
+
+readRDS(here::here("results", "tables", "subset_selection.rds"))
+```
+They were all greater than the full and null model of 0.6. 
 
 
 ## Full analysis
 
+### Tree Analysis
 
-Principal component analysis
-_Use one or several suitable statistical/machine learning methods to analyze your data and to produce meaningful figures, tables, etc. This might again be code that is best placed in one or several separate R scripts that need to be well documented. You can then load the results produced by this code_
-```{r}
+The previous analysis only looked at the titers of the monoclonals. But by looking at the other charateristics we may be able to determine more about the data. The other variables were compared to the outcome variables of which virus the monoclonals were raised against (Figure 14). All of the differnent variables are visualized in Supplemental Figure 9. This is not a binomial outcome because there are five different outcomes. Therefore I will try to make a decision tree of the variables. 
+
+```{r resultfigure14,  fig.cap='Figure 14. classical (red), Eurasian (black), and human-like (blue) clades.', echo=FALSE}
+
+knitr::include_graphics(here::here("results", "figures", "different_predictors.png"))
+```
+
+We know from above that the null model accuracy of predicting P1 (the greatest value) is 0.4 (216/540 total observations). 
+
+The single predictor analysis is described in table 9. Some of concentration, log2, and dilution ( which are just transformations of each other) have about the same accuracy of 0.44, marginally better than the null. 
+
+```{r resulttable9,  fig.cap='Table 9. classical (red), Eurasian (black), and human-like (blue) clades.', echo=FALSE}
+
+readRDS(here::here("results", "tables", "tree_single_predictor.rds"))
+```
+
+```{r resultfigure15,  fig.cap='Figure 15. classical (red), Eurasian (black), and human-like (blue) clades.', echo=FALSE}
+
+knitr::include_graphics(here::here("results", "figures", "rparttree.png"))
+```
+I don't think I have enough data for a tree.
+
+### Principal component analysis
+```{r resultfigure16,  fig.cap='Figure 16. classical (red), Eurasian (black), and human-like (blue) clades.', echo=FALSE}
+
 knitr::include_graphics(here::here("results", "figures", "all_monoclonal_pca.png"))
 ```
+The supplementary figure 6 also contains the PCA analysis of the sera responses. 
 
 # Discussion
 

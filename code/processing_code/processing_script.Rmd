@@ -132,6 +132,9 @@ p1_mab <- p1_mab %>%
 
 p1_mab <- p1_mab %>%
   left_join(antigen_key, by = c("antigen" = "short_name"))
+
+mabs <- bind_rows(ca09_mab, p1_mab)
+mabs_full <- bind_rows("ca09" = ca09_mab_full, "p1" = p1_mab_full, .id = "mab")
 ```
 
 
@@ -147,8 +150,11 @@ saveRDS(p1_sera_full, file = here("data", "processed_data", "p1sera_full.rds"))
 saveRDS(ca09_sera_full, file = here("data", "processed_data", "ca09sera_full.rds"))
 saveRDS(p1_mab_full, file = here("data", "processed_data", "p1mab_full.rds"))
 saveRDS(ca09_mab_full, file = here("data", "processed_data", "ca09mab_full.rds"))
+saveRDS(mabs, file = here("data", "processed_data", "mabs_processed_data.rds"))
+saveRDS(mabs_full, file = here("data", "processed_data", "mabs_full.rds"))
 
 saveRDS(antigen_key, file = here("data", "processed_data", "antigen_key.rds"))
 saveRDS(antibody_key, file = here("data", "processed_data", "antibody_key.rds"))
+
 
 ```

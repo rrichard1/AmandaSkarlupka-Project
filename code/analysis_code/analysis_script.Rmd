@@ -4,6 +4,8 @@ author: "Amanda Skarlupka"
 date: "10/27/2019"
 output: html_document
 ---
+This document contains Figures 3 and 5 and supplemental figures 1 through 4. 
+It investigates the overall inhibition of P1, Wildtype, and CA/09 monoclonal antibodies. 
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
@@ -30,13 +32,6 @@ p1_sera <- readRDS(here("data", "processed_data", "p1sera_processed_data.rds"))
 ```
 
 
-
-#I need these because I wrote the code before I realized that my data wasn't actually linked. So I'll need to go back and clean this up.
-CA09_mabs_full <- readRDS("./data/processed_data/CA09mabs_full_processed_data.rds")
-CA09_sera_full <- readRDS("./data/processed_data/CA09sera_full_processed_data.rds")
-p1_mabs_full <- readRDS("./data/processed_data/p1mabs_full_processed_data.rds")
-p1_sera_full <- readRDS("./data/processed_data/p1sera_full_processed_data.rds")
-
 take a look at the data
 ```{r}
 glimpse(ca09_mab)
@@ -61,6 +56,7 @@ f <- p1_mab %>%
 
 p1_mab$antigen <- factor(p1_mab$antigen, levels = (f), ordered=TRUE)
 
+#testing the code
 p1_mab %>%
   filter(clone_name == "1F8") %>%
   ggplot(aes(y = dilution, x = antigen)) +
@@ -80,8 +76,9 @@ Graph of all the monoclonal responses
 p1mab_by_mab <- p1_mab %>%
   ggplot(aes(y = dilution, x = antigen, shape = lineage, color = sublineage), size = 0.5) +
   geom_point() +
-  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
-  labs(y = "Dilution from 20ug/ml") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(y = "Dilution from 20ug/ml",
+       x = "Antigen") +
   scale_shape_manual(values = c(15:18)) +
   scale_y_continuous(trans = "log2") +
   facet_wrap(vars(clone_name))
@@ -95,14 +92,17 @@ p1_mab$clone_name <- factor(p1_mab$clone_name, levels = pu, ordered = TRUE)
 p1mab_by_antigen <- p1_mab %>%
   ggplot(aes(y = dilution, x = clone_name, color = elisa_specificity), size = 0.5) +
   geom_point() +
-  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
-  labs(y = "Dilution from 20ug/ml") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(y = "Dilution from 20ug/ml",
+       x = "Antigen") +
   scale_shape_manual(values = c(15:18)) +
   scale_y_continuous(trans = "log2") +
   facet_wrap(vars(antigen))
 
-ggsave(filename= here("results", "p1mab_by_mab.png"), plot = p1mab_by_mab)
-ggsave(filename = here("results", "p1mab_by_antigen.png"), plot = p1mab_by_antigen)
+ggsave(filename= here("results", "figures", "p1mab_by_mab.png"), plot = p1mab_by_mab)
+p1mab_by_mab
+ggsave(filename = here("results", "figures", "supp_p1mab_by_antigen.png"), plot = p1mab_by_antigen)
+p1mab_by_antigen
 ```
 Repeat it for the CA09 specific monoclonals
 ```{r}
@@ -114,6 +114,7 @@ ca09_mab$antigen <- factor(ca09_mab$antigen, levels = c("Swine/31", "Iowa/73", "
 
 ca09_mab$antigen <- factor(ca09_mab$antigen, levels = (f), ordered=TRUE)
 
+#testing the code
 ca09_mab %>%
   filter(clone_name == "1E6") %>%
   ggplot(aes(y = dilution, x = antigen)) +
@@ -122,7 +123,7 @@ ca09_mab %>%
   scale_shape_manual(values = c(15:18)) +
   labs(y = "Dilution from 20ug/ml") 
 ```
-
+We'll now look at the wild-type raised monoclonals. 
 ```{r}
 
 cn <- ca09_mab %>%
@@ -131,50 +132,63 @@ cn <- ca09_mab %>%
 cn <- unique(cn)
 ca09_mab$clone_name <- factor(ca09_mab$clone_name, levels = (cn), ordered=TRUE)
 
-ca09mab_by_mab <- ca09_mab %>%
+WTmab_by_mab <- ca09_mab %>%
   ggplot(aes(y = dilution, x = antigen, shape = lineage, color = sublineage), size = 0.5) +
   geom_point() +
-  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
   labs(y = "Dilution from 20ug/ml") +
   scale_shape_manual(values = c(15:18)) +
   scale_y_continuous(trans = "log2") +
   facet_wrap(vars(clone_name))
 
-ca09mab_by_antigen <- ca09_mab %>%
+WTmab_by_antigen <- ca09_mab %>%
   ggplot(aes(y = dilution, x = clone_name, shape = elisa_specificity, color = raised_against), size = 0.5) +
   geom_point() +
-  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
-  labs(y = "Dilution from 20ug/ml") +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(y = "Dilution from 20ug/ml",
+       x = "Antigen") +
   scale_shape_manual(values = c(15:18)) +
   scale_y_continuous(trans = "log2") +
   facet_wrap(vars(antigen))
 
-ca09mab_by_antigen
+WTmab_by_antigen
+WTmab_by_mab
 
-ggsave(filename = here("results", "ca09mab_by_mab.png"), plot = ca09mab_by_mab)
-ggsave(filename = here("results", "ca09mab_by_antigen.png"), plot = ca09mab_by_antigen)
+ggsave(filename = here("results", "figures", "supp_WTmab_by_mab.png"), plot = WTmab_by_mab, width = 9)
+ggsave(filename = here("results", "figures", "supp_WTmab_by_antigen.png"), plot = WTmab_by_antigen, width = 9)
 ```
-potentially include the SW1-4 COBRA VLPs. 
 
-Graph of just wild-type H1 raised monoclonal responses.
+
+The previous graphs included the all of the wild-type antibodies (including SC/18 and Bris/07). We're specifically interested in CA/09. So I'll make a graph of just CA/09 and save the other as a supplemental image. 
 
 ```{r}
 ca09_mab$key_name <- as.factor(ca09_mab$key_name)
-#ca09_mab$key_name <- mutate(ca09_mab$key_name, funs=toupper)
 
-
-
-ca09_mab %>%
+ca09_mab_individual <- ca09_mab %>%
   filter(raised_against == "ca09") %>%
   ggplot(aes(y = dilution, x = antigen, color = lineage), size = 0.5) +
   geom_point() +
-  theme(axis.text.x = element_text(angle = 60, hjust = 1)) +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
   labs(y = "Dilution from 20ug/ml") +
   scale_shape_manual(values = c(15:18)) +
   scale_y_continuous(trans = "log2") +
   facet_wrap(vars(clone_name))
 
+ca09_mab_by_antigen <- ca09_mab %>%
+  filter(raised_against == "ca09") %>%
+  ggplot(aes(y = dilution, x = clone_name), size = 0.5) +
+  geom_point() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1)) +
+  labs(y = "Dilution from 20ug/ml",
+       x = "Antigen") +
+  scale_shape_manual(values = c(15:18)) +
+  scale_y_continuous(trans = "log2") +
+  facet_wrap(vars(antigen))
 
+ggsave(here("results", "figures", "ca09_mab_individual.png"), plot = ca09_mab_individual, width = 9)
+ca09_mab_individual
+
+ggsave(here("results", "figures", "supp_ca09_mab_by_antigen.png"), plot = ca09_mab_by_antigen, width =9)
 ```
 
 

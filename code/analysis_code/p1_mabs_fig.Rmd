@@ -5,6 +5,11 @@ date: "11/4/2019"
 output: html_document
 ---
 
+
+Figures 4 and 7 are contained in this document. 
+
+This P1 specific document contains the radar/spider graphs of the HAI response. It also contains the HAI responses based on elisa specificity of the monoclonals.
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -96,7 +101,8 @@ broad_p1_mab <- p1_mab %>%
   theme(axis.text.x = element_text(colour = c("blue", "blue", "blue", "blue", "grey", "red", "red", "red", "red", "red", "red", "red", "red", "red", "red", "red", "black", "black", "blue", "blue"))) +
   labs(y = "Dilution from 20ug/ml",
        title = "Broadly Reactive P1 Monoclonals against Swine Virus HAs")
-ggsave(filename = here::here("results", "figures", "broad_p1_mab_fig3.png"), plot = broad_p1_mab)
+
+
 ```
 
 Narrowly reactive figure
@@ -113,7 +119,9 @@ narrow_p1_mab <- p1_mab %>%
   theme(axis.text.x = element_text(colour = c("blue", "blue", "blue", "blue", "grey", "red", "red", "red", "red", "red", "red", "red", "red", "red", "red", "red", "black", "black", "blue", "blue"))) +
   labs(y = "Dilution from 20ug/ml",
        title = "Narrowly Reactive P1 Monoclonals against Swine Virus HAs")
-ggsave(filename = here::here("results", "figures", "narrow_p1_mab_fig3.png"), plot = narrow_p1_mab)
+
+
+
 ```
 
 Cobra-ly reactive figure
@@ -135,7 +143,6 @@ cobra_p1_mab <- p1_mab %>%
   theme(axis.text.x = element_text(colour = c("blue", "blue", "blue", "blue", "grey", "red", "red", "red", "red", "red", "red", "red", "red", "red", "red", "red", "black", "black", "blue", "blue"))) +
   labs(y = "Dilution from 20ug/ml",
        title = "P1 COBRA Specific P1 Monoclonals against Swine Virus HAs")
-ggsave(filename = here::here("results", "figures", "cobra_p1_mab_fig3.png"), plot = cobra_p1_mab)
 
 ```
 
@@ -182,7 +189,7 @@ radar_narrow <- ggradar(p1_mab_narrow, values.radar = c(0, 1, 2, 3, 4, 5, 6, 7, 
 p1_mab_cobra <- p1_mab_full %>%
   filter(clone_name %in% cobra_p1)
 
-radar_cobra <- ggradar(p1_mab_cobra, values.radar = c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10), grid.max = 10, group.point.size = 1, group.line.width = 0.5, legend.title = "Cobra reactivity", legend.text.size = 4, plot.legend = TRUE)
+radar_cobra <- ggradar(p1_mab_cobra, values.radar = c(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10), grid.max = 10, group.point.size = 1, group.line.width = 0.5, legend.title = "Cobra reactivity", plot.legend = TRUE)
 
 
 radar_fig3 <- ggarrange(radar_broad, radar_narrow, radar_cobra, ncol=3, nrow = 1)
@@ -192,7 +199,7 @@ ggsave(filename = here::here("results", "figures", "radar_fig3.png"), plot = rad
 radar_cobra
 
 ```
-
+This is an attempt to fix the radar graphs to make the y axis more interpretable. But I couldn't figure it out yet. 
 ```{r}
 p1_mab %>%
   filter(clone_name %in% mabs) %>%
