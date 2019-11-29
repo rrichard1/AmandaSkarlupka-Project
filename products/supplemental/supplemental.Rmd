@@ -32,12 +32,12 @@ knitr::include_graphics(here::here("results", "figures", "supp_ca09_mab_by_antig
 knitr::include_graphics(here::here("results", "figures", "supp_p1mab_by_antigen.png"))
 ```
 
-```{r resultfigure5,  fig.cap='Supplemental Figure 5. The quantification of monoclonals inhibit each virus', echo= FALSE}
+```{r resultfigure5,  fig.cap='Supplemental Figure 5. The quantification of monoclonals that inhibit each virus', echo= FALSE}
 knitr::include_graphics(here::here("results", "figures", "supp_univariate_antigen.png"))
 ```
 
 
-```{r resultfigure6,  fig.cap='Supplemental Figure 6. The quantification of monoclonals inhibit each virus', echo= FALSE}
+```{r resultfigure6,  fig.cap='Supplemental Figure 6. Principle component analysis of the HAI titers of polyclonal sera from individual mice with antibodies to CA/09 or P1. Mice are numbered 1-6 for CA/09 and 7-14 for P1. Two mice for P1 (Mouse ID 2 and 10) were removed from the analysis due to missing HAI titers against some of the swine viruses. The swine viruses are represented as vectors', echo= FALSE}
 knitr::include_graphics(here::here("results", "figures", "supp_sera_pca.png"))
 ```
 
@@ -47,18 +47,18 @@ Positively correlated variables are grouped together.
 Negatively correlated variables are positioned on opposite sides of the plot origin (opposed quadrants).
 The distance between variables and the origin measures the quality of the variables on the factor map. Variables that are away from the origin are well represented on the factor map.
 
-```{r resultfigure7,  fig.cap='Supplemental Figure 7. The quantification of monoclonals inhibit each virus', echo= FALSE}
+```{r resultfigure7,  fig.cap='Supplemental Figure 7. Principle component analysis of the HAI titers of wild-type raised monoclonal antibodies. Antibodies are color coded. The swine viruses are represented as vectors.', echo= FALSE}
 knitr::include_graphics(here::here("results", "figures", "supp_ca09_pca.png"))
 ```
 
-```{r resultfigure8,  fig.cap='Supplemental Figure 8. The quantification of monoclonals inhibit each virus', echo= FALSE}
+```{r resultfigure8,  fig.cap='Supplemental Figure 8. Principle component analysis of the HAI titers of P1 raised monoclonal antibodies. Antibodies are color coded. The swine viruses are represented as vectors.', echo= FALSE}
 knitr::include_graphics(here::here("results", "figures", "supp_p1_pca.png"))
 ```
 
-```{r resulttable1,  fig.cap='Supplemental Table 1. The quantification of monoclonals inhibit each virus', echo= FALSE}
+```{r resulttable1,  fig.cap='Supplemental Table 1. The full logistic model results', echo= FALSE}
 readRDS(here::here("results", "tables", "full_logistic_model.rds"))
 ```
-```{r resultfigure9,  fig.cap='Supplemental Figure 9. The quantification of monoclonals inhibit each virus', echo= FALSE}
+```{r resultfigure9,  fig.cap='Supplemental Figure 9. All of the predictor variables for the different monoclonal antibody gropus. Clone_name, Elisa_specificity, and antigen were removed from the final analysis.', echo= FALSE}
 knitr::include_graphics(here::here("results", "figures", "supp_different_predictors.png"))
 ```
 
