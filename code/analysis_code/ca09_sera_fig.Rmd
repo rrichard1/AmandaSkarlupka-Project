@@ -25,10 +25,10 @@ library(here)
 I need to load the data that has the wildtype reactivity
 
 ```{r}
-ca09_mab <- readRDS(here("data", "processed_data", "ca09mab_processed_data.rds"))
-ca09_sera <- readRDS(here("data", "processed_data", "ca09sera_processed_data.rds"))
-antigen_key <- readRDS(here("data", "processed_data", "antigen_key.rds"))
-p1_sera <- readRDS(here("data", "processed_data", "p1sera_processed_data.rds"))
+ca09_mab <- readRDS(here::here("data", "processed_data", "ca09mab_processed_data.rds"))
+ca09_sera <- readRDS(here::here("data", "processed_data", "ca09sera_processed_data.rds"))
+antigen_key <- readRDS(here::here("data", "processed_data", "antigen_key.rds"))
+p1_sera <- readRDS(here::here("data", "processed_data", "p1sera_processed_data.rds"))
 ```
 
  I need to compare the polyclonal and the monoclonal antibodies on the same chart. The monoclonal data are already averages of the HAI results. Therefore, I need to take the average of the sera data and add that to the mab data. The mean average needs to be taken of the log2 transformed variable because the data needs to have the geometric mean calculated for it normally (it's on a log distribution so you can't take the average of untransformed values). 
@@ -79,7 +79,7 @@ sera_fig1 <- sera %>%
   theme(axis.text.y = element_text(colour = c("red", "red", "red", "red", "red", "red", "red", "black", "black", "blue", "blue"))) +
   coord_flip()
 
-ggsave(filename = here("results", "figures", "sera_fig1.png"), plot = sera_fig1, width = 6, height = 3, units = "in")
+ggsave(filename = here::here("results", "figures", "sera_fig1.png"), plot = sera_fig1, width = 6, height = 3, units = "in")
 sera_fig1
 ```
 Figure 1. The HA inhibition of swine viruses of polyclonal sera of mice sub-lethally challenged with either A/California/07/2009 (CA/09) or P1 COBRA viruses. The swine virus panel included representatives from the classical (red), Eurasian (black), and human-like (blue) clades.

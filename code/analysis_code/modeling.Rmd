@@ -37,8 +37,8 @@ library('ggpubr')
 Load the data
 
 ```{r}
-mabs <- readRDS(here("data", "processed_data", "mabs_processed_data.rds"))
-mabs_full <- readRDS(here("data", "processed_data", "mabs_full.rds"))
+mabs <- readRDS(here::here("data", "processed_data", "mabs_processed_data.rds"))
+mabs_full <- readRDS(here::here("data", "processed_data", "mabs_full.rds"))
 
 ```
 
@@ -66,7 +66,7 @@ mabs$raised_against <- as.factor(mabs$raised_against)
 
 variables <- visdat::vis_dat(mabs)
 
-ggsave(here("results", "figures", "visualizing_variables.png"), plot = variables)
+ggsave(here::here("results", "figures", "visualizing_variables.png"), plot = variables)
 
 ```
 
@@ -76,7 +76,7 @@ ggsave(here("results", "figures", "visualizing_variables.png"), plot = variables
 titers <- visdat::vis_dat(mabs_full)
 visdat::vis_miss(mabs_full)
 
-ggsave(here("results", "figures", "visualizing_titers.png"), plot = titers)
+ggsave(here::here("results", "figures", "visualizing_titers.png"), plot = titers)
 ```
 I am interested to see if I can tell based on HAI titer if it will be a P1 monoclonal antibody or a CA/09 antibody. 
 
@@ -91,7 +91,7 @@ outcome_histo <- mabs_full %>%
     x = "Monoclonal Antibody"
   )
 
-ggsave(here("results", "figures", "outcome_histo.png"), plot = outcome_histo)
+ggsave(here::here("results", "figures", "outcome_histo.png"), plot = outcome_histo)
 ```
 
 All of the predictors have all their data. So I want to make sure that they are correctly input and the data looks normal with no weird errors. I want to change the 'mab' into a factor. 
@@ -111,7 +111,7 @@ predictors <- mabs_full %>%
   scale_x_continuous(trans='log2') +
   facet_wrap(~ var)
 
-ggsave(here("results", "figures", "predictors_histogram.png"), plot = predictors)
+ggsave(here::here("results", "figures", "predictors_histogram.png"), plot = predictors)
 
 str(mabs_full)
 ```
@@ -124,7 +124,7 @@ outcome_context <- mabs_full %>%
   facet_wrap(~ var, scales = 'free')
 
 outcome_context
-ggsave(here("results", "figures", "outcome_variable_distribution.png"), plot = outcome_context)
+ggsave(here::here("results", "figures", "outcome_variable_distribution.png"), plot = outcome_context)
 
 
 group_by(mabs, antigen, raised_against) %>%
@@ -155,8 +155,8 @@ p1_normality <- with(mabs, shapiro.test(concentration[raised_against == "p1"])) 
 with(mabs, shapiro.test(concentration[raised_against == "sc18"])) #W = 0.65793, p-value = 5.947e-10
 #with(mabs, shapiro.test(concentration[raised_against == "pr34"])) #All the x values are identical
 
-saveRDS(here("results", "tables", "ca09_normality_results.rds"), object = ca09_normality)
-saveRDS(here("results", "tables", "p1_normality_results.rds"), object = p1_normality)
+saveRDS(here::here("results", "tables", "ca09_normality_results.rds"), object = ca09_normality)
+saveRDS(here::here("results", "tables", "p1_normality_results.rds"), object = p1_normality)
 
 ```
 My data doesn't pass the normality test. Therefore, it's suggested to do a non-parametric Wilcoxon rank test. The rank test arguements take two numeric vectors as x and y
@@ -169,7 +169,7 @@ p1_conc <- mabs %>%
   pull(concentration)
 rank_results <- wilcox.test(ca09_conc, p1_conc, alternative = "two.sided") #W = 20292, p-value = 0.2867
 
-saveRDS(here("results", "tables", "rank_results.rds"), object = rank_results)
+saveRDS(here::here("results", "tables", "rank_results.rds"), object = rank_results)
 
 ca09_log2 <- mabs %>%
   filter(raised_against == "ca09") %>%
@@ -196,7 +196,7 @@ log2.ftest #ratio of variances: 1.219726 p-value = 0.3058
 f_test <- concentration.ftest #ratio of variances: 0.9692263, p-value = 0.8719
 dilution.ftest #ratio of variances: 5.403161, p-value < 2.2e-16
 
-saveRDS(here("results", "tables", "f_test.rds"), object = f_test)
+saveRDS(here::here("results", "tables", "f_test.rds"), object = f_test)
 ```
 So the log2 and concentrations have the same variance, but the dilution does not. 
 
@@ -234,13 +234,14 @@ I'm getting a lot of errors with the t-testing because the data doesn't follow a
 
 
 ```{r}
-mabs_full <- mabs_full[,c(2,1,3:20)]
-mabs_full <- mabs_full %>%
-  select(-clone_name)
+mabs_full <- mabs_full[,c(2,1,3:18)] ##number of columns needed to be changed -megan
+##mabs_full <- mabs_full %>%
+##  select(-clone_name)
+## clone name already gone? -megan
 visdat::vis_dat(mabs_full)
-correlation <- visdat::vis_cor(mabs_full[,c(2:19)])
-ggsave(here("results", "figures", "correlations.png"), plot = correlation)
-ggsave(here("results", "figures", "predictors_outcome.png"), plot = outcome_context)
+correlation <- visdat::vis_cor(mabs_full[,c(2:18)])
+ggsave(here::here("results", "figures", "correlations.png"), plot = correlation)
+ggsave(here::here("results", "figures", "predictors_outcome.png"), plot = outcome_context)
 ```
 
 # Setup
@@ -308,7 +309,7 @@ for (nn in 1:npred)
     unifmat[nn,2] = model$aggr
 }
 single_predictor <- kable(unifmat)
-saveRDS(here("results", "tables", "single_predictor.rds"), object = single_predictor)
+saveRDS(here::here("results", "tables", "single_predictor.rds"), object = single_predictor)
 ```
 
 So looks like only one of the single predictor models have a higher accuracy than the null. That one is the NC/09 HA with a value of 0.833. Maybe next I'll want to look if any other features would make good predictors. 
@@ -410,7 +411,7 @@ different_predictors <- mabs %>%
 
 different_predictors
 
-ggsave(here("results", "figures", "supp_different_predictors.png"), plot = different_predictors, width = 8, height = 9)
+ggsave(here::here("results", "figures", "supp_different_predictors.png"), plot = different_predictors, width = 8, height = 9)
 ```
 
 I'll remove antigen, clone_name, and Elisa specificity because they don't have values for some of the predictors, and in the case of the antigen they are all equal. 
@@ -424,7 +425,7 @@ cleaned_predictors <- mabs %>%
   geom_count() +
   facet_wrap(~ var, scales = 'free')
 
-ggsave(here("results", "figures", "different_predictors.png"), plot = cleaned_predictors, width = 8, height = 4)
+ggsave(here::here("results", "figures", "different_predictors.png"), plot = cleaned_predictors, width = 8, height = 4)
 
 mabs <- mabs[, c(4, 1:3, 5:8)]
 mabs$virus <- as.factor(mabs$virus)

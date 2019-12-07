@@ -25,10 +25,10 @@ library(here)
 
 Load the processed data
 ```{r}
-ca09_mab <- readRDS(here("data", "processed_data", "ca09mab_processed_data.rds"))
-ca09_sera <- readRDS(here("data", "processed_data", "ca09sera_processed_data.rds"))
-p1_mab <- readRDS(here("data", "processed_data", "p1mab_processed_data.rds"))
-p1_sera <- readRDS(here("data", "processed_data", "p1sera_processed_data.rds"))
+ca09_mab <- readRDS(here::here("data", "processed_data", "ca09mab_processed_data.rds"))
+ca09_sera <- readRDS(here::here("data", "processed_data", "ca09sera_processed_data.rds"))
+p1_mab <- readRDS(here::here("data", "processed_data", "p1mab_processed_data.rds"))
+p1_sera <- readRDS(here::here("data", "processed_data", "p1sera_processed_data.rds"))
 ```
 
 
