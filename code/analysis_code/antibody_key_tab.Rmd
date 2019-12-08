@@ -25,6 +25,7 @@ library(sjlabelled)
 library(stargazer)
 library(here)
 
+
 ```
 
 
@@ -80,6 +81,7 @@ The table needs to be formatted for publication.
 ```{r}
 library(webshot)
 
+webshot::install_phantomjs(force = TRUE)
 sjPlot::tab_df(antibody_table, col.header = c("Monoclonal", "Catalogue ID", "Raised against", "Documented Specificity", "Reference"), file = here("results", "tables", "antibody_table.html"))
 
 

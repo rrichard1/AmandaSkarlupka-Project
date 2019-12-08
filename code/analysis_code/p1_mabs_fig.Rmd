@@ -33,11 +33,11 @@ library(scales)
 I need to load the data that has the wildtype reactivity
 
 ```{r}
-ca09_mab <- readRDS(here("data", "processed_data", "ca09mab_processed_data.rds"))
-ca09_sera <- readRDS(here("data", "processed_data", "ca09sera_processed_data.rds"))
-antigen_key <- readRDS(here("data", "processed_data", "antigen_key.rds"))
-p1_sera <- readRDS(here("data", "processed_data", "p1sera_processed_data.rds"))
-p1_mab <- readRDS(here("data", "processed_data", "p1mab_processed_data.rds"))
+ca09_mab <- readRDS(here::here("data", "processed_data", "ca09mab_processed_data.rds"))
+ca09_sera <- readRDS(here::here("data", "processed_data", "ca09sera_processed_data.rds"))
+antigen_key <- readRDS(here::here("data", "processed_data", "antigen_key.rds"))
+p1_sera <- readRDS(here::here("data", "processed_data", "p1sera_processed_data.rds"))
+p1_mab <- readRDS(here::here("data", "processed_data", "p1mab_processed_data.rds"))
 ```
 Pan-H1 COBRA P1 mAbs:
 
@@ -170,7 +170,7 @@ Create a radar plot to try and visualize the differences of the broad, narrow, a
 ```{r}
 mabs <- c(broad_p1, narrow_p1, cobra_p1)
 
-p1_mab_full <- readRDS(here("data", "processed_data", "p1mab_full.rds"))
+p1_mab_full <- readRDS(here::here("data", "processed_data", "p1mab_full.rds"))
 p1_mab_full[, c(2:19)] <- log2(20/p1_mab_full[,c(2:19)])
 
 p1_mab_full <- p1_mab_full %>%
