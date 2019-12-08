@@ -124,7 +124,7 @@ Create a radar plot to try and visualize the differences of the broad, narrow, a
 Change into log and reorder the columns so that they are sorted by the lineages of the swine HAs.
 ```{r}
 
-ca09_mab_full <- readRDS(here("data", "processed_data", "ca09mab_full.rds"))
+ca09_mab_full <- readRDS(here::here("data", "processed_data", "ca09mab_full.rds"))
 ca09_mab_full[, c(2:19)] <- log2(20/ca09_mab_full[,c(2:19)])
 
 swine_lineage <- c("clone_name", "Swine/31", "Iowa/73", "WI/97", "Indiana/00", "NC/01", "Spain/2003", "Zhejiang/07", "Colorado/09", "Illinois/09", "Minnesota/09", "NC/09", "NC/34543/09", "NC/5043-1/09", "Utah/09", "Missouri/13", "Nebraska/13", "MN/15", "NC/15")

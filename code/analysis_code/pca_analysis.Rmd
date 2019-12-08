@@ -24,11 +24,11 @@ library(here)
 Load the processed data
 ```{r}
 
-ca09_mab_full <- readRDS(here("data", "processed_data", "ca09mab_full.rds"))
-ca09_sera_full <- readRDS(here("data", "processed_data", "ca09sera_full.rds"))
-p1_mab_full <- readRDS(here("data", "processed_data", "p1mab_full.rds"))
-p1_sera_full <- readRDS(here("data", "processed_data", "p1sera_full.rds"))
-antibody_key <- readRDS(here("data", "processed_data", "antibody_key.rds"))
+ca09_mab_full <- readRDS(here::here("data", "processed_data", "ca09mab_full.rds"))
+ca09_sera_full <- readRDS(here::here("data", "processed_data", "ca09sera_full.rds"))
+p1_mab_full <- readRDS(here::here("data", "processed_data", "p1mab_full.rds"))
+p1_sera_full <- readRDS(here::here("data", "processed_data", "p1sera_full.rds"))
+antibody_key <- readRDS(here::here("data", "processed_data", "antibody_key.rds"))
 
 ```
 
@@ -118,7 +118,7 @@ sera_pca_fig <- ggbiplot(sera_pca, obs.scale = 1, var.scale = 1, groups = sera$v
   xlim(c(3.5, -3.5)) + 
   ylim(c(-3.5, 3.5))
 
-ggsave(here("results", "figures", "supp_sera_pca.png"), plot = sera_pca_fig)
+ggsave(here::here("results", "figures", "supp_sera_pca.png"), plot = sera_pca_fig)
 ```
 
 The plot above is also known as variable correlation plots. It shows the relationships between all variables. It can be interpreted as follow:
@@ -138,7 +138,7 @@ ca09_mab_pca <- prcomp(ca09_mab[, 2:14], center = TRUE, scale = TRUE)
 plot(ca09_mab_pca, type = "l")
 supp_ca09_pca <- ggbiplot(ca09_mab_pca, obs.scale = 1, var.scale = 1, groups = ca09_mab$clone_name)
 
-ggsave(here("results", "figures", "supp_ca09_pca.png"), plot = supp_ca09_pca)
+ggsave(here::here("results", "figures", "supp_ca09_pca.png"), plot = supp_ca09_pca)
 ```
 
 
@@ -152,7 +152,7 @@ p1_mab_pca <- prcomp(p1_mab[, 2:14], center = TRUE, scale = TRUE)
 plot(p1_mab_pca, type = "l")
 supp_p1_pca <- ggbiplot(p1_mab_pca, obs.scale = 1, var.scale = 1, groups = p1_mab$clone_name)
 
-ggsave(here("results", "figures", "supp_p1_pca.png"), plot = supp_p1_pca)
+ggsave(here::here("results", "figures", "supp_p1_pca.png"), plot = supp_p1_pca)
 ```
 
 
