@@ -1,0 +1,151 @@
+# Overview
+
+Title of project: Monoclonal Antibody Cross-Reactivity between Swine Influenza Hemagglutinins
+
+Author of project: Amanda Skarlupka
+
+## Background, Context and Motivation
+How well is the context of the project described? Is a comprehensive background, including summary of previous/related work given? Is the project well placed into the context of existing work (including proper referencing of existing work). Is it clear why the project was undertaken and what new information it hopes to provide?
+
+### Feedback and Comments
+
+This section is very well written, however some background info on work related to cross-species influenza or how this work is novel would be useful here. 
+
+### Summary assessment
+* some contextualization and motivation
+
+
+## Question description
+How well and clear are the question(s)/hypotheses the project aims to address described? Is it clear how the questions relate to the data?
+
+### Feedback and Comments
+Clearly stated research questions and hypothesis.
+
+
+### Summary assessment
+
+* question/hypotheses fully clear
+
+
+## Data description
+How well is the data overall described? Is the source provided? Is a codebook or other meta-information available that makes it clear what the data is? 
+
+### Feedback and Comments
+
+A brief intro paragraph (not even a full paragraph, really) describing how the different variables are grouped would be helpful here, otherwise, the section is great and well detailed within each section. 
+
+### Summary assessment
+
+* source and overall structure of data well explained
+
+
+## Data wrangling and exploratory analysis
+How well is the data cleaned/processed and explored? Are all steps reasonable and well explained? Are alternatives discussed and considered? Are meaningful exploratory results shown (e.g. in the supplementary materials)?
+
+### Feedback and Comments
+
+Very nice job with wrangling data and EDA.  I like the incorporation of separate RMDs rather than just comments in an R file. 
+
+
+### Summary assessment
+
+* essentially no weaknesses in wrangling and exploratory component
+
+
+## Appropriateness of Analysis
+Were the analysis methods appropriate for the data? Was the analysis done properly? Were different components of the analysis (e.g. performance measure, variable selection, data pre-processing, model evaluation) done in the best way possible and explained well?
+
+### Feedback and Comments
+
+I did not see any major issues with your analysis. I do wonder if extending the PCA by incorporating Factor Analysis would be a useful way to interpret the PC loadings.
+
+### Summary assessment
+
+* strong and reasonable analysis
+
+## Presentation
+How well are results presented? Are tables and figures easy to read and understand? Are the main figures/tables publication level quality? 
+
+### Feedback and Comments
+
+Nice work. My only suggestion here is to maybe break longer tables into smaller parts, or reshape them wider, so you don't waste a lot of page space with a two column table. The graphs were well done, although you should check your figure descriptions in some of the chunk headers. A few were mismatched with the actual graph. 
+
+### Summary assessment
+
+* results are very well presented
+
+
+## Discussion/Conclusions
+Are the study findings properly discussed? Are strengths and limitations acknowledged? Are findings interpreted properly?
+
+
+### Feedback and Comments
+
+Good job on the discussion/conclusion. I don't have any real critique here. 
+
+
+### Summary assessment
+
+* strong, complete and clear discussion
+
+
+# Overall project content evaluation
+Evaluate overall features of the project  by filling in the sections below.
+
+
+## Structure
+Is the project well structured? Are files in well labeled folders? Do files have reasonable names? Are all "junk" files not needed for analysis/reproduction removed? By just looking at files and folders, can you get an idea of how things fit together?
+
+### Feedback and Comments
+
+Very clean file/folder structure. Great work.
+
+### Summary assessment
+
+* well structured
+
+
+## Documentation 
+How well is the project documented? Are you able to understand each step of the whole analysis, each decision that was made, and each line of code? Is enough information provided as comments in code or as part of Rmd files? 
+
+### Feedback and Comments
+
+
+A few of the RMD files failed with either duplicate chunk label errors. This could totally be due to my personal R Studio settings, but just thought I'd give you a heads-up. 
+
+
+### Summary assessment
+* fully and well documented
+
+
+
+## Reproducible
+Are all results fully reproducible? Is documentation provided which clearly explains how to reproduce things, and does it work without the need for any manual intervention?
+
+### Feedback and Comments
+
+I ran into a few issues with reproducible aside from the aforementioned chunk error. A `visdat` error also kept popping up. Again, that could be on my end.
+
+### Summary assessment
+* small parts not reproducible or required manual intervention 
+
+
+## Thoroughness
+How thorough was the overall study? Were alternatives (e.g. different ways of processing the data or different models) considered? Were alternatives discussed? Were the questions/hypotheses fully and thoroughly addressed?
+
+### Feedback and Comments
+
+Very well written and interesting study. You did a nice job of hitting all of the targets you set out for in the introduction. Great work overall.
+
+### Summary assessment
+
+* strong level of thoroughness
+
+
+## Further comments
+
+Excellent work, Other than the minor chunk/ R package issues, there is very little to improve. 
+
+
+
+
